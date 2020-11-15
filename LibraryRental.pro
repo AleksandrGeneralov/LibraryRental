@@ -15,6 +15,7 @@ INCLUDEPATH += src \
                icons \
 
 SOURCES += \
+    src/data_base/SqlUtils.cpp \
     src/gui/AuthenticationDialog.cpp \
     main.cpp \
     src/gui/MessageDialog.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
     src/gui/mainwindow.cpp
 
 HEADERS += \
+    src/data_base/SqlUtils.h \
     src/gui/AuthenticationDialog.h \
     src/gui/DialogIncludes.h \
     src/gui/MainIncludes.h \
