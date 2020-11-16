@@ -20,7 +20,7 @@ protected:
     explicit SqlUtils(QObject *parent = nullptr);
 
 public:
-    static SqlUtils *instance();
+    static SqlUtils *getInstance();
 
     // replace all data by query
     // command example:

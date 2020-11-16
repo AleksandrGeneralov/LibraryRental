@@ -15,6 +15,8 @@ INCLUDEPATH += src \
                icons \
 
 SOURCES += \
+    src/data_base/SqlCreator.cpp \
+    src/data_base/SqlManager.cpp \
     src/data_base/SqlUtils.cpp \
     src/gui/AuthenticationDialog.cpp \
     main.cpp \
@@ -23,6 +25,9 @@ SOURCES += \
     src/gui/mainwindow.cpp
 
 HEADERS += \
+    src/data_base/SqlCreator.h \
+    src/data_base/SqlDefine.h \
+    src/data_base/SqlManager.h \
     src/data_base/SqlUtils.h \
     src/gui/AuthenticationDialog.h \
     src/gui/DialogIncludes.h \

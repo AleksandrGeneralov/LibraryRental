@@ -2,6 +2,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <QSqlError>
 #include <QDebug>
 
 SqlUtils *SqlUtils::utils = nullptr;
@@ -12,7 +13,7 @@ SqlUtils::SqlUtils(QObject *parent) : QObject(parent)
 
 }
 
-SqlUtils *SqlUtils::instance()
+SqlUtils *SqlUtils::getInstance()
 {
     QMutexLocker lock(&mutex);
 
@@ -164,6 +165,7 @@ bool SqlUtils::execCommand(QSqlDatabase *db, const QString &command)
     if (!query.exec(command))
     {
         qDebug() << QString("Error execute query: %1").arg(query.lastQuery());
+        qDebug() << "SqLite error:" << query.lastError().text() << ", SqLite error code:" << query.lastError().nativeErrorCode();
         finishQuery(query);
         return false;
     }
