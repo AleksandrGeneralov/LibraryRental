@@ -25,12 +25,14 @@ void RegistrationDialog::init()
     passwordLay->addWidget(passwordLabel);
     passwordLay->addStretch();
     passwordEdit = new QLineEdit(this);
+    passwordEdit->setEchoMode(QLineEdit::Password);
 
     QPointer<QHBoxLayout> passwordRepeatLay = new QHBoxLayout();
     QPointer<QLabel> passwordRepeatLabel = new QLabel(QString("Повторите пароль"), this);
     passwordRepeatLay->addWidget(passwordRepeatLabel);
     passwordRepeatLay->addStretch();
     passwordRepeatEdit = new QLineEdit(this);
+    passwordRepeatEdit->setEchoMode(QLineEdit::Password);
 
     QPointer<QHBoxLayout> lastNameLay = new QHBoxLayout();
     QPointer<QLabel> lastNameLabel = new QLabel(QString("Фамилия"), this);
@@ -49,6 +51,12 @@ void RegistrationDialog::init()
     middleNameLay->addWidget(middleNameLabel);
     middleNameLay->addStretch();
     middleNameEdit = new QLineEdit(this);
+
+    QPointer<QHBoxLayout> passportLay = new QHBoxLayout();
+    QPointer<QLabel> passportLabel = new QLabel(QString("Паспортные данные"), this);
+    passportLay->addStretch();
+    passportLay->addWidget(passportLabel);
+    passportLay->addStretch();
 
     QPointer<QHBoxLayout> seriesLay = new QHBoxLayout();
     QPointer<QLabel> seriesLabel = new QLabel(QString("Серия"), this);
@@ -114,6 +122,8 @@ void RegistrationDialog::init()
     mainLay->addLayout(middleNameLay);
     mainLay->addWidget(middleNameEdit);
     mainLay->addSpacing(5);
+    mainLay->addLayout(passportLay);
+    mainLay->addSpacing(5);
     mainLay->addLayout(serNumLay);
     mainLay->addSpacing(5);
     mainLay->addLayout(organizeLay);
@@ -136,11 +146,22 @@ bool RegistrationDialog::isEmptyFields()
            || organizeEdit->toPlainText().isEmpty() || registrationEdit->toPlainText().isEmpty();
 }
 
+bool RegistrationDialog::isEqualPasswords()
+{
+    return passwordEdit->text() == passwordRepeatEdit->text();
+}
+
 void RegistrationDialog::slotAccept()
 {
+    if (!isEqualPasswords())
+    {
+        MessageDialog::critical(this, QString("Введенные пароли не совпадают."));
+        return;
+    }
+
     if (isEmptyFields())
     {
-        MessageDialog::critical(this, QString("Пожалуйста, заполните все поля"));
+        MessageDialog::critical(this, QString("Пожалуйста, заполните все поля."));
         return;
     }
 

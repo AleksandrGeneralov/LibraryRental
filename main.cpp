@@ -26,6 +26,9 @@ int main(int argc, char *argv[])
     if (db)
     {
         SqlCreator::getInstance().create(db);
+
+        db.reset();
+        SqlManager::getInstance().closeDB();
     }
     else
     {

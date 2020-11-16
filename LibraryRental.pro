@@ -15,6 +15,7 @@ INCLUDEPATH += src \
                icons \
 
 SOURCES += \
+    src/DataStructures.cpp \
     src/data_base/SqlCreator.cpp \
     src/data_base/SqlManager.cpp \
     src/data_base/SqlUtils.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
     src/gui/mainwindow.cpp
 
 HEADERS += \
+    src/DataStructures.h \
     src/data_base/SqlCreator.h \
     src/data_base/SqlDefine.h \
     src/data_base/SqlManager.h \

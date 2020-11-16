@@ -16,6 +16,10 @@ void SqlCreator::create(std::shared_ptr<QSqlDatabase> db)
 {
     createTable(db, "users",
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "login VARCHAR(255),"
+                "password VARCHAR(255)");
+    createTable(db, "users_info",
+                "user_id INTEGER"
                 "type INTEGER(8),"
                 "name VARCHAR(255),"
                 "passport_series VARCHAR(255),"

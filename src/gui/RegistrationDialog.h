@@ -25,6 +25,7 @@ public:
 private:
     void init();
     bool isEmptyFields();
+    bool isEqualPasswords();
 
 private slots:
     void slotAccept();
