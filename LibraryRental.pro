@@ -23,6 +23,9 @@ SOURCES += \
     main.cpp \
     src/gui/MessageDialog.cpp \
     src/gui/RegistrationDialog.cpp \
+    src/gui/bottom_widgets/catalog/CatalogModel.cpp \
+    src/gui/bottom_widgets/catalog/CatalogTable.cpp \
+    src/gui/bottom_widgets/catalog/CatalogWidget.cpp \
     src/gui/mainwindow.cpp
 
 HEADERS += \
@@ -33,9 +36,13 @@ HEADERS += \
     src/data_base/SqlUtils.h \
     src/gui/AuthenticationDialog.h \
     src/gui/DialogIncludes.h \
-    src/gui/MainIncludes.h \
+    src/MainIncludes.h \
     src/gui/MessageDialog.h \
     src/gui/RegistrationDialog.h \
+    src/gui/bottom_widgets/BottomWidget.h \
+    src/gui/bottom_widgets/catalog/CatalogModel.h \
+    src/gui/bottom_widgets/catalog/CatalogTable.h \
+    src/gui/bottom_widgets/catalog/CatalogWidget.h \
     src/gui/mainwindow.h
 
 # Default rules for deployment.

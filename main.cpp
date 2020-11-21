@@ -17,9 +17,15 @@ void checkDataBase()
     }
 }
 
+void finishWork()
+{
+    SqlManager::getInstance().closeDB();
+}
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    MainWindow w;
 
     checkDataBase();
     std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
@@ -39,8 +45,17 @@ int main(int argc, char *argv[])
 
     if (authDlg.exec() == QDialog::Accepted)
     {
-        MainWindow w;
         w.show();
     }
-    return 0;
+    else
+    {
+        finishWork();
+
+        return 1;
+    }
+
+    int result = a.exec();
+    finishWork();
+
+    return result;
 }

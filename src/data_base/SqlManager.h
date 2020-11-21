@@ -2,7 +2,7 @@
 #define SQLMANAGER_H
 
 #include <QSqlDatabase>
-#include <memory>
+#include "MainIncludes.h"
 
 class SqlManager
 {

@@ -2,7 +2,7 @@
 #define SQLCREATOR_H
 
 #include <QSqlDatabase>
-#include <memory>
+#include "MainIncludes.h"
 
 class SqlCreator
 {
@@ -17,6 +17,8 @@ public:
 
 private:
     void createTable(std::shared_ptr<QSqlDatabase> db, const QString &tableName, const QString &table);
+    void addColumn(std::shared_ptr<QSqlDatabase> db, const QString &tableName,
+                   const QString &columnName, const QString &columnType);
 };
 
 #endif // SQLCREATOR_H
