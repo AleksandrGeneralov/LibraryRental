@@ -1,21 +1,14 @@
 #ifndef CATALOGWIDGET_H
 #define CATALOGWIDGET_H
 
-#include <QWidget>
-#include "../../DialogIncludes.h"
+#include "../BottomWidget.h"
 
-class CatalogTable;
-class CatalogModel;
-
-class CatalogWidget : public QWidget
+class CatalogWidget : public BottomWidget
 {
     Q_OBJECT
 
-    CatalogTable *table;
-    CatalogModel *model;
-
 public:
-    CatalogWidget(QWidget *parent);
+    CatalogWidget(QWidget *parent = nullptr);
 
 private:
     void initUi();

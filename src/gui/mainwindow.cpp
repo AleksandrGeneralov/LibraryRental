@@ -14,19 +14,19 @@ void MainWindow::initUi()
 {
     setMinimumSize(600, 600);
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLay = new QVBoxLayout();
+    mainLay = new QVBoxLayout();
     mainWidget->setLayout(mainLay);
 
-    createFrames();
+//    createFrames();
     createButtonLayout(mainWidget);
 
     catalogWidget = new CatalogWidget(mainWidget);
-    QVBoxLayout *bottomLay = new QVBoxLayout();
-    bottomLay->addWidget(catalogWidget);
-    bottomFrame->setLayout(bottomLay);
+//    QVBoxLayout *bottomLay = new QVBoxLayout();
+//    bottomLay->addWidget(catalogWidget);
+//    bottomFrame->setLayout(bottomLay);
 
-    mainLay->addWidget(topFrame);
-    mainLay->addWidget(bottomFrame);
+//    mainLay->addWidget(topFrame);
+    mainLay->addWidget(catalogWidget);
 
     this->setCentralWidget(mainWidget);
 }
@@ -59,7 +59,7 @@ void MainWindow::createButtonLayout(QWidget *parent)
     buttonLay->addWidget(authorsButton, buttonLay->rowCount() - 1, 1, 1, 1);
     buttonLay->addWidget(publishingButton, buttonLay->rowCount() - 1, 2, 1, 1);
 
-    buttonLay->setContentsMargins(0, 0, 0, 0);
+    buttonLay->setContentsMargins(8, 0, 8, 0);
     buttonLay->setHorizontalSpacing(1);
     buttonLay->setVerticalSpacing(0);
 
@@ -68,7 +68,7 @@ void MainWindow::createButtonLayout(QWidget *parent)
 //        buttonLay->setRowMinimumHeight(i, 50);
 //    }
 
-    topFrame->setLayout(buttonLay);
+    mainLay->addLayout(buttonLay);
 }
 
 void MainWindow::setActiveBottomWidget(int typeWidget)

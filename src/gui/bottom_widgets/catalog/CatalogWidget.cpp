@@ -4,16 +4,13 @@
 #include "CatalogModel.h"
 
 CatalogWidget::CatalogWidget(QWidget *parent)
-    : QWidget(parent)
+    : BottomWidget(parent)
 {
     initUi();
 }
 
 void CatalogWidget::initUi()
 {
-    QVBoxLayout *mainLay = new QVBoxLayout();
-    this->setLayout(mainLay);
-
     table = new CatalogTable(this);
     model = new CatalogModel(table);
 

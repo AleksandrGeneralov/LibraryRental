@@ -1,9 +1,9 @@
 #ifndef CATALOGTABLE_H
 #define CATALOGTABLE_H
 
-#include <QTableView>
+#include "../BottomTable.h"
 
-class CatalogTable : public QTableView
+class CatalogTable : public BottomTable
 {
     Q_OBJECT
 public:

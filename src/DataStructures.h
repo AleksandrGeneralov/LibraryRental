@@ -29,56 +29,53 @@ struct UserInfo
     void setNameFromBase(const QString &name);
 };
 
-struct Genre
+struct BaseDataInfo
 {
     qlonglong id;
 
     QString name;
+};
 
+struct Genre : public BaseDataInfo
+{
     Genre(const QSqlRecord &record);
 };
 
-struct Publishing
+struct Publishing : public BaseDataInfo
 {
-    qlonglong id;
-
-    QString name;
-
     Publishing(const QSqlRecord &record);
 };
 
-struct Author
+struct Author : public BaseDataInfo
 {
-    qlonglong id;
-
     QString firstName;
     QString lastName;
     QString middleName;
 
     Author(const QSqlRecord &record);
+
+    void setName();
 };
 
-struct Book
+struct Book : public BaseDataInfo
 {
-    qlonglong id;
-
     int allCount;
     int currentCount;
 
-    QString name;
     QStringList genres;
     QString publishing;
     QStringList authors;
 
+    Book();
     Book(const QSqlRecord &record);
 
     void setDataList(const QString &data, QStringList &list);
 };
 
-
-typedef QList<std::unique_ptr<Genre>> Genres;
-typedef QList<std::unique_ptr<Publishing>> Publishings;
-typedef QList<std::unique_ptr<Author>> Authors;
+typedef QList<std::shared_ptr<BaseDataInfo>> BaseDataInfos;
+typedef QList<std::shared_ptr<Genre>> Genres;
+typedef QList<std::shared_ptr<Publishing>> Publishings;
+typedef QList<std::shared_ptr<Author>> Authors;
 typedef QList<std::shared_ptr<Book>> Books;
 
 #endif // DATASTRUCTURES_H

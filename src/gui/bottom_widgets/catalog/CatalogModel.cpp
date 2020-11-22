@@ -1,12 +1,12 @@
 #include "CatalogModel.h"
 
 CatalogModel::CatalogModel(QObject *parent)
-    : QStandardItemModel(parent)
+    : BottomModel(parent)
 {
 
 }
 
-void CatalogModel::setData(Books &books)
+void CatalogModel::setData(BaseDataInfos &books)
 {
     this->books.clear();
 
@@ -74,7 +74,7 @@ QVariant CatalogModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    std::shared_ptr<Book> book = books.at(index.row());
+    std::shared_ptr<Book> book = std::static_pointer_cast<Book>(books.at(index.row()));
 
     if (role == Qt::DisplayRole)
     {

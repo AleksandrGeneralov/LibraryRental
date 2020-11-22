@@ -23,9 +23,18 @@ SOURCES += \
     main.cpp \
     src/gui/MessageDialog.cpp \
     src/gui/RegistrationDialog.cpp \
+    src/gui/bottom_widgets/author/AuthorModel.cpp \
+    src/gui/bottom_widgets/author/AuthorTable.cpp \
+    src/gui/bottom_widgets/author/AuthorWidget.cpp \
     src/gui/bottom_widgets/catalog/CatalogModel.cpp \
     src/gui/bottom_widgets/catalog/CatalogTable.cpp \
     src/gui/bottom_widgets/catalog/CatalogWidget.cpp \
+    src/gui/bottom_widgets/genre/GenreModel.cpp \
+    src/gui/bottom_widgets/genre/GenreTable.cpp \
+    src/gui/bottom_widgets/genre/GenreWidget.cpp \
+    src/gui/bottom_widgets/publishing/PublishingModel.cpp \
+    src/gui/bottom_widgets/publishing/PublishingTable.cpp \
+    src/gui/bottom_widgets/publishing/PublishingWidget.cpp \
     src/gui/mainwindow.cpp
 
 HEADERS += \
@@ -39,10 +48,21 @@ HEADERS += \
     src/MainIncludes.h \
     src/gui/MessageDialog.h \
     src/gui/RegistrationDialog.h \
+    src/gui/bottom_widgets/BottomModel.h \
+    src/gui/bottom_widgets/BottomTable.h \
     src/gui/bottom_widgets/BottomWidget.h \
+    src/gui/bottom_widgets/author/AuthorModel.h \
+    src/gui/bottom_widgets/author/AuthorTable.h \
+    src/gui/bottom_widgets/author/AuthorWidget.h \
     src/gui/bottom_widgets/catalog/CatalogModel.h \
     src/gui/bottom_widgets/catalog/CatalogTable.h \
     src/gui/bottom_widgets/catalog/CatalogWidget.h \
+    src/gui/bottom_widgets/genre/GenreModel.h \
+    src/gui/bottom_widgets/genre/GenreTable.h \
+    src/gui/bottom_widgets/genre/GenreWidget.h \
+    src/gui/bottom_widgets/publishing/PublishingModel.h \
+    src/gui/bottom_widgets/publishing/PublishingTable.h \
+    src/gui/bottom_widgets/publishing/PublishingWidget.h \
     src/gui/mainwindow.h
 
 # Default rules for deployment.

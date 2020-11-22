@@ -1,29 +1,24 @@
-#ifndef CATALOGMODEL_H
-#define CATALOGMODEL_H
+#ifndef GENREMODEL_H
+#define GENREMODEL_H
 
 #include "../BottomModel.h"
 
-class CatalogModel : public BottomModel
+class GenreModel : public BottomModel
 {
-    enum CatalogColumns
+    enum GenreColumns
     {
         colName = 0,
-        colAuthor = 1,
-        colGenres = 2,
-        colPublishing = 3,
-        colCurrCount = 4,
-        colAllCount = 5,
-        colCount = 6
+        colCount = 1
     };
 
     Q_OBJECT
 
-    QList<std::shared_ptr<BaseDataInfo>> books;
+    QList<std::shared_ptr<BaseDataInfo>> genres;
 
 public:
-    explicit CatalogModel(QObject *parent = nullptr);
+    GenreModel(QObject *parent = nullptr);
 
-    void setData(BaseDataInfos &books);
+    void setData(BaseDataInfos &genres);
 
 private:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -32,4 +27,4 @@ private:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 };
 
-#endif // CATALOGMODEL_H
+#endif // GENREMODEL_H

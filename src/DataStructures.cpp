@@ -39,21 +39,57 @@ void UserInfo::setNameFromBase(const QString &name)
 Genre::Genre(const QSqlRecord &record)
 {
     id = record.value("id").toLongLong();
+
     name = record.value("name").toString();
 }
 
 Publishing::Publishing(const QSqlRecord &record)
 {
     id = record.value("id").toLongLong();
+
     name = record.value("name").toString();
 }
 
 Author::Author(const QSqlRecord &record)
 {
     id = record.value("id").toLongLong();
+
     firstName = record.value("first_name").toString();
     middleName = record.value("middle_name").toString();
     lastName = record.value("last_name").toString();
+
+    setName();
+}
+
+void Author::setName()
+{
+    if (!firstName.isEmpty())
+    {
+        name = firstName;
+    }
+
+    if (!name.isEmpty() && !middleName.isEmpty())
+    {
+        name = QString("%1 %2").arg(name).arg(middleName);
+    }
+    else if (!middleName.isEmpty())
+    {
+        name = middleName;
+    }
+
+    if (!name.isEmpty() && !lastName.isEmpty())
+    {
+        name = QString("%1 %2").arg(name).arg(lastName);
+    }
+    else if (!lastName.isEmpty())
+    {
+        name = lastName;
+    }
+}
+
+Book::Book()
+{
+
 }
 
 Book::Book(const QSqlRecord &record)

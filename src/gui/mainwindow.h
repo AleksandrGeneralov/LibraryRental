@@ -5,6 +5,7 @@
 #include "DialogIncludes.h"
 #include "MainIncludes.h"
 #include "bottom_widgets/catalog/CatalogWidget.h"
+#include "bottom_widgets/BottomWidget.h"
 #include <QFrame>
 
 class MainWindow : public QMainWindow
@@ -20,6 +21,8 @@ class MainWindow : public QMainWindow
         widgetPublishing = 4
     };
 
+    QVBoxLayout *mainLay;
+
     QFrame *topFrame;
     QFrame *bottomFrame;
 
@@ -31,7 +34,7 @@ class MainWindow : public QMainWindow
     QPushButton *authorsButton;
     QPushButton *publishingButton;
 
-    CatalogWidget *catalogWidget;
+    BottomWidget *catalogWidget;
 
 public:
     MainWindow(QWidget *parent = nullptr);
