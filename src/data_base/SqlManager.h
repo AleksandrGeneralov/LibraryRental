@@ -3,6 +3,7 @@
 
 #include <QSqlDatabase>
 #include "MainIncludes.h"
+#include "SqlUtils.h"
 
 class SqlManager
 {

@@ -32,6 +32,7 @@ SOURCES += \
     src/gui/bottom_widgets/genre/GenreModel.cpp \
     src/gui/bottom_widgets/genre/GenreTable.cpp \
     src/gui/bottom_widgets/genre/GenreWidget.cpp \
+    src/gui/bottom_widgets/personal/PersonalWidget.cpp \
     src/gui/bottom_widgets/publishing/PublishingModel.cpp \
     src/gui/bottom_widgets/publishing/PublishingTable.cpp \
     src/gui/bottom_widgets/publishing/PublishingWidget.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
     src/gui/bottom_widgets/genre/GenreModel.h \
     src/gui/bottom_widgets/genre/GenreTable.h \
     src/gui/bottom_widgets/genre/GenreWidget.h \
+    src/gui/bottom_widgets/personal/PersonalWidget.h \
     src/gui/bottom_widgets/publishing/PublishingModel.h \
     src/gui/bottom_widgets/publishing/PublishingTable.h \
     src/gui/bottom_widgets/publishing/PublishingWidget.h \

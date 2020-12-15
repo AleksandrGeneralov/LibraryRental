@@ -7,6 +7,7 @@
 #include <QVariant>
 
 #include "MainIncludes.h"
+#include "data_base/SqlManager.h"
 
 struct UserInfo
 {
@@ -24,9 +25,25 @@ struct UserInfo
     QString registration;
     QString cardNumber;
 
+    UserInfo();
     UserInfo(const QSqlRecord &record);
 
+    void fillSqlData(QStringList &fields, QVariantList &values);
+
     void setNameFromBase(const QString &name);
+    void setCardNumber();
+    QString createCardNumber();
+};
+
+struct FullUserInfo : public UserInfo
+{
+    QString login;
+    QString password;
+
+    FullUserInfo();
+    FullUserInfo(const QSqlRecord &record);
+
+    void fillSqlData(QStringList &fields, QVariantList &values);
 };
 
 struct BaseDataInfo
@@ -39,11 +56,15 @@ struct BaseDataInfo
 struct Genre : public BaseDataInfo
 {
     Genre(const QSqlRecord &record);
+
+    void fillSqlData(QStringList &fields, QVariantList &values);
 };
 
 struct Publishing : public BaseDataInfo
 {
     Publishing(const QSqlRecord &record);
+
+    void fillSqlData(QStringList &fields, QVariantList &values);
 };
 
 struct Author : public BaseDataInfo
@@ -53,6 +74,8 @@ struct Author : public BaseDataInfo
     QString middleName;
 
     Author(const QSqlRecord &record);
+
+    void fillSqlData(QStringList &fields, QVariantList &values);
 
     void setName();
 };
@@ -68,6 +91,8 @@ struct Book : public BaseDataInfo
 
     Book();
     Book(const QSqlRecord &record);
+
+    void fillSqlData(QStringList &fields, QVariantList &values);
 
     void setDataList(const QString &data, QStringList &list);
 };

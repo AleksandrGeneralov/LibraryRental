@@ -3,6 +3,7 @@
 
 #include "DialogIncludes.h"
 #include "MainIncludes.h"
+#include "DataStructures.h"
 
 class RegistrationDialog : public QDialog
 {
@@ -26,6 +27,10 @@ private:
     void init();
     bool isEmptyFields();
     bool isEqualPasswords();
+
+    void writeDataToBase();
+    void fillUserInfo(std::shared_ptr<FullUserInfo> fullUserInfo);
+    void setUserInfoIntoBase(std::shared_ptr<FullUserInfo> fullUserInfo);
 
 private slots:
     void slotAccept();

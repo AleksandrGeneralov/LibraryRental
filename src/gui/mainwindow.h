@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include "DialogIncludes.h"
 #include "MainIncludes.h"
-#include "bottom_widgets/catalog/CatalogWidget.h"
 #include "bottom_widgets/BottomWidget.h"
 #include <QFrame>
 
@@ -34,7 +33,8 @@ class MainWindow : public QMainWindow
     QPushButton *authorsButton;
     QPushButton *publishingButton;
 
-    BottomWidget *catalogWidget;
+    std::unique_ptr<BottomWidget> bottomWidget;
+    QWidget *mainWidget;
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -45,8 +45,16 @@ private:
 
     void createFrames();
     void createButtonLayout(QWidget *parent);
-    void setActiveBottomWidget(int typeWidget);
+
+    void deleteBottomWidget();
 
     QString setFrameStyleSheet();
+
+private slots:
+    void slotCatalogButtonClicked();
+    void slotPersonalButtonClicked();
+    void slotGenresButtonClicked();
+    void slotAuthorButtonClicked();
+    void slotPublishingButtonClicked();
 };
 #endif // MAINWINDOW_H

@@ -1,6 +1,7 @@
 #include "AuthenticationDialog.h"
 #include "MessageDialog.h"
 #include "RegistrationDialog.h"
+#include "../data_base/SqlManager.h"
 
 AuthenticationDialog::AuthenticationDialog(QPointer<QWidget> parent)
     : QDialog(parent)
@@ -73,6 +74,14 @@ void AuthenticationDialog::slotAccept()
     else if (passwordEdit->text().isEmpty())
     {
         message = QString("Пожалуйста, введите пароль");
+    }
+
+    std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+    if (!SqlUtils::getInstance()->sqlIsExist(db.get(), "users", QStringList() << "login" << "password",
+                                            QStringList() << loginEdit->text().trimmed()
+                                            << passwordEdit->text().trimmed()))
+    {
+        message = QString("Неправильный логин/пароль");
     }
 
     if (!message.isEmpty())

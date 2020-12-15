@@ -30,6 +30,7 @@ public:
     bool sqlUpdate(QSqlDatabase *db, const QString &table, const QStringList &fields, const QStringList &values, const QString &filter = "");
     bool sqlExec(QSqlDatabase *db, const QString &command);
     bool sqlValue(QSqlDatabase *db, const QString &command, QVariant &result);
+    bool sqlIsExist(QSqlDatabase *db, const QString &table, const QStringList &fields, const QStringList &values);
 
     qlonglong getLastTableId(QSqlDatabase *db);
 

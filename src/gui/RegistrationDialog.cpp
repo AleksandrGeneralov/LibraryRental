@@ -151,6 +151,34 @@ bool RegistrationDialog::isEqualPasswords()
     return passwordEdit->text() == passwordRepeatEdit->text();
 }
 
+void RegistrationDialog::writeDataToBase()
+{
+    std::shared_ptr<FullUserInfo> fullUserInfo = std::make_shared<FullUserInfo>();
+
+    fillUserInfo(fullUserInfo);
+}
+
+void RegistrationDialog::fillUserInfo(std::shared_ptr<FullUserInfo> fullUserInfo)
+{
+    fullUserInfo->login = loginEdit->text().trimmed();
+    fullUserInfo->password = passwordEdit->text().trimmed();
+    fullUserInfo->firstName = firstNameEdit->text().trimmed();
+    fullUserInfo->middleName = middleNameEdit->text().trimmed();
+    fullUserInfo->lastName = lastNameEdit->text().trimmed();
+    fullUserInfo->passportSeries = seriesEdit->text().trimmed();
+    fullUserInfo->passportNumber = numberEdit->text().trimmed();
+    fullUserInfo->issuedOrganize = organizeEdit->toPlainText().trimmed();
+    fullUserInfo->registration = registrationEdit->toPlainText().trimmed();
+    fullUserInfo->setCardNumber();
+}
+
+void RegistrationDialog::setUserInfoIntoBase(std::shared_ptr<FullUserInfo> fullUserInfo)
+{
+    QStringList fields;
+    QVariantList values;
+    fullUserInfo->fillSqlData(fields, values);
+}
+
 void RegistrationDialog::slotAccept()
 {
     if (!isEqualPasswords())
@@ -164,6 +192,8 @@ void RegistrationDialog::slotAccept()
         MessageDialog::critical(this, QString("Пожалуйста, заполните все поля."));
         return;
     }
+
+    writeDataToBase();
 
     this->accept();
 }

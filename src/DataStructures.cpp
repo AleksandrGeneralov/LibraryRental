@@ -1,5 +1,22 @@
 #include "DataStructures.h"
 
+UserInfo::UserInfo()
+{
+    id = 0;
+
+    type = 0;
+    discount = 0;
+
+    firstName = "";
+    lastName = "";
+    middleName = "";
+    passportSeries = "";
+    passportNumber = "";
+    issuedOrganize = "";
+    registration = "";
+    cardNumber = "";
+}
+
 UserInfo::UserInfo(const QSqlRecord &record)
 {
     id = record.value("id").toLongLong();
@@ -13,6 +30,18 @@ UserInfo::UserInfo(const QSqlRecord &record)
     issuedOrganize = record.value("issued_organize").toString();
     registration = record.value("registration").toString();
     cardNumber = record.value("card_number").toString();
+}
+
+void UserInfo::fillSqlData(QStringList &fields, QVariantList &values)
+{
+    fields << "type"; values << type;
+    fields << "name"; values << QString("%1##%2##%3").arg(firstName).arg(middleName).arg(lastName);
+    fields << "passport_series"; values << passportSeries;
+    fields << "passport_number"; values << passportNumber;
+    fields << "issued_organize"; values << issuedOrganize;
+    fields << "registration"; values << registration;
+    fields << "card_number"; values << cardNumber;
+    fields << "discount"; values << discount;
 }
 
 void UserInfo::setNameFromBase(const QString &name)
@@ -36,6 +65,46 @@ void UserInfo::setNameFromBase(const QString &name)
     }
 }
 
+void UserInfo::setCardNumber()
+{
+    cardNumber = createCardNumber();
+}
+
+QString UserInfo::createCardNumber()
+{
+    std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+
+    QString command = QString("SELECT card_number FROM users_info ORDER BY card_number DESC LIMIT 1");
+
+    QVariant baseMaxCardNumber;
+    if (SqlUtils::getInstance()->sqlValue(db.get(), command, baseMaxCardNumber))
+    {
+        return QString::number(baseMaxCardNumber.toLongLong() + 1);
+    }
+
+    return QString();
+}
+
+FullUserInfo::FullUserInfo() : UserInfo()
+{
+    login = "";
+    password = "";
+}
+
+FullUserInfo::FullUserInfo(const QSqlRecord &record) : UserInfo(record)
+{
+    login = record.value("login").toString();
+    password = record.value("password").toString();
+}
+
+void FullUserInfo::fillSqlData(QStringList &fields, QVariantList &values)
+{
+    UserInfo::fillSqlData(fields, values);
+
+    fields << "login"; values << login;
+    fields << "password"; values << password;
+}
+
 Genre::Genre(const QSqlRecord &record)
 {
     id = record.value("id").toLongLong();
@@ -43,11 +112,21 @@ Genre::Genre(const QSqlRecord &record)
     name = record.value("name").toString();
 }
 
+void Genre::fillSqlData(QStringList &fields, QVariantList &values)
+{
+    fields << "name"; values << name;
+}
+
 Publishing::Publishing(const QSqlRecord &record)
 {
     id = record.value("id").toLongLong();
 
     name = record.value("name").toString();
+}
+
+void Publishing::fillSqlData(QStringList &fields, QVariantList &values)
+{
+    fields << "name"; values << name;
 }
 
 Author::Author(const QSqlRecord &record)
@@ -59,6 +138,11 @@ Author::Author(const QSqlRecord &record)
     lastName = record.value("last_name").toString();
 
     setName();
+}
+
+void Author::fillSqlData(QStringList &fields, QVariantList &values)
+{
+    fields << "name"; values << QString("%1##%2##%3").arg(firstName).arg(middleName).arg(lastName);
 }
 
 void Author::setName()
@@ -103,6 +187,17 @@ Book::Book(const QSqlRecord &record)
     setDataList(record.value("genres").toString(), genres);
     publishing = record.value("publishing").toString();
     setDataList(record.value("authors").toString(), authors);
+}
+
+void Book::fillSqlData(QStringList &fields, QVariantList &values)
+{
+    Q_UNUSED(fields)
+    Q_UNUSED(values)
+//    fields << "name"; values << name;
+//    fields << "all_count"; values << allCount;
+//    fields << "current_count"; values << currentCount;
+//    fields << "genres"; values << genres;
+//    fields << "authors"; values << authors;
 }
 
 void Book::setDataList(const QString &data, QStringList &list)

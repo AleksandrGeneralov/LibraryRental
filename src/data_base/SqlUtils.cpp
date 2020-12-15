@@ -145,6 +145,42 @@ bool SqlUtils::sqlValue(QSqlDatabase *db, const QString &command, QVariant &resu
     return true;
 }
 
+bool SqlUtils::sqlIsExist(QSqlDatabase *db, const QString &table, const QStringList &fields, const QStringList &values)
+{
+    qDebug("SqlUtils::sqlIsExist");
+    if (!db)
+    {
+        qDebug("Error sql insert: data base is not initialize.");
+        return false;
+    }
+
+    if (fields.count() != values.count())
+    {
+        qDebug("Error sql insert: fields size != values size.");
+        return false;
+    }
+
+    QStringList preparedValues;
+
+    for (int i = 0; i < fields.count(); i++)
+    {
+        preparedValues.append(QString("%1=%2").arg(fields.at(i)).arg(values.at(i)));
+    }
+
+    QString command = QString("SELECT * FROM %1 WHERE %2").arg(table).arg(preparedValues.join(" AND "));
+
+    QSqlQuery query(*db);
+    if (query.exec(command))
+    {
+        if(query.next())
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 qlonglong SqlUtils::getLastTableId(QSqlDatabase *db)
 {
     QVariant result = 0;
