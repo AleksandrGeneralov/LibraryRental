@@ -1,5 +1,6 @@
 #include "RegistrationDialog.h"
 #include "MessageDialog.h"
+#include "data_base/SqlManager.h"
 
 RegistrationDialog::RegistrationDialog(QPointer<QWidget> parent)
     : QDialog(parent)
@@ -156,6 +157,19 @@ void RegistrationDialog::writeDataToBase()
     std::shared_ptr<FullUserInfo> fullUserInfo = std::make_shared<FullUserInfo>();
 
     fillUserInfo(fullUserInfo);
+
+    std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+    QString falseMessage = QString("Не удалось зарегистрировать пользователя.\nПовторите регистрацию.");
+    if (setUsersIntoBase(fullUserInfo, db))
+    {
+        fullUserInfo->userId = SqlUtils::getInstance()->getLastTableId(db.get(), QString("users"));
+        if (!setUserInfoIntoBase(fullUserInfo, db))
+        {
+            SqlUtils::getInstance()->sqlExec(db.get(), QString("DELETE FROM users WHERE id=%1").arg(fullUserInfo->userId));
+            MessageDialog::critical(this, falseMessage);
+        }
+    }
+    SqlManager::getInstance().closeDB();
 }
 
 void RegistrationDialog::fillUserInfo(std::shared_ptr<FullUserInfo> fullUserInfo)
@@ -172,11 +186,41 @@ void RegistrationDialog::fillUserInfo(std::shared_ptr<FullUserInfo> fullUserInfo
     fullUserInfo->setCardNumber();
 }
 
-void RegistrationDialog::setUserInfoIntoBase(std::shared_ptr<FullUserInfo> fullUserInfo)
+bool RegistrationDialog::setUserInfoIntoBase(std::shared_ptr<FullUserInfo> fullUserInfo,
+                                             std::shared_ptr<QSqlDatabase> db)
 {
-    QStringList fields;
-    QVariantList values;
-    fullUserInfo->fillSqlData(fields, values);
+    QStringList infoFields;
+    QVariantList infoValues;
+    fullUserInfo->UserInfo::fillSqlData(infoFields, infoValues);
+
+    if (!SqlUtils::getInstance()->sqlInsert(db.get(), "users_info", infoFields, infoValues))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool RegistrationDialog::setUsersIntoBase(std::shared_ptr<FullUserInfo> fullUserInfo,
+                                          std::shared_ptr<QSqlDatabase> db)
+{
+    QStringList usersFields;
+    QVariantList usersValues;
+    fullUserInfo->fillSqlData(usersFields, usersValues);
+
+    if (SqlUtils::getInstance()->sqlIsExist(db.get(), "users", QStringList() << "login",
+                                            QStringList() << fullUserInfo->login))
+    {
+        MessageDialog::critical(this, QString("Пользователь с таким именем уже существует."));
+        return false;
+    }
+
+    if (!SqlUtils::getInstance()->sqlInsert(db.get(), "users", usersFields, usersValues))
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void RegistrationDialog::slotAccept()

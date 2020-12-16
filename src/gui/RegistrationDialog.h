@@ -30,7 +30,8 @@ private:
 
     void writeDataToBase();
     void fillUserInfo(std::shared_ptr<FullUserInfo> fullUserInfo);
-    void setUserInfoIntoBase(std::shared_ptr<FullUserInfo> fullUserInfo);
+    bool setUserInfoIntoBase(std::shared_ptr<FullUserInfo> fullUserInfo, std::shared_ptr<QSqlDatabase> db);
+    bool setUsersIntoBase(std::shared_ptr<FullUserInfo> fullUserInfo, std::shared_ptr<QSqlDatabase> db);
 
 private slots:
     void slotAccept();

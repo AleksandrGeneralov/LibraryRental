@@ -22,6 +22,8 @@ SqlManager::~SqlManager()
 
 std::shared_ptr<QSqlDatabase> SqlManager::openDB()
 {
+    qDebug("SqlManager::openDB");
+
     if (db && db->isOpen())
     {
         qDebug("Database is open.");
@@ -45,6 +47,7 @@ std::shared_ptr<QSqlDatabase> SqlManager::openDB()
 
 void SqlManager::closeDB()
 {
+    qDebug("SqlManager::closeDB");
     if (!db || !db->isValid())
     {
         return;

@@ -11,7 +11,7 @@
 
 struct UserInfo
 {
-    qlonglong id;
+    qlonglong userId;
 
     int type;
     int discount;

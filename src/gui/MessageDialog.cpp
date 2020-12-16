@@ -9,7 +9,7 @@ MessageDialog::MessageDialog(QPointer<QWidget> parent,
     QPointer<QVBoxLayout> mainLay = new QVBoxLayout();
     QPointer<QHBoxLayout> messageLay = new QHBoxLayout();
 
-    icon = new QSvgWidget(QString("icons/information.svg"), this);
+    icon = new QSvgWidget(this);
     icon->setFixedSize(QSize(8, 8));
     icon->setMinimumSize(QSize(8, 8));
 
@@ -44,7 +44,6 @@ int MessageDialog::warning(QPointer<QWidget> parent,
                            const QString &text)
 {
     MessageDialog dlg(parent, text);
-    dlg.setIcon(QString("icons/warning.svg"));
 
     return dlg.exec();
 }
@@ -53,7 +52,6 @@ int MessageDialog::critical(QPointer<QWidget> parent,
                             const QString &text)
 {
     MessageDialog dlg(parent, text);
-    dlg.setIcon(QString("icons/critical.svg"));
 
     return dlg.exec();
 }

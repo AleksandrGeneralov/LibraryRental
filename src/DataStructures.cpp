@@ -2,7 +2,7 @@
 
 UserInfo::UserInfo()
 {
-    id = 0;
+    userId = 0;
 
     type = 0;
     discount = 0;
@@ -19,7 +19,7 @@ UserInfo::UserInfo()
 
 UserInfo::UserInfo(const QSqlRecord &record)
 {
-    id = record.value("id").toLongLong();
+    userId = record.value("id").toLongLong();
 
     type = record.value("type").toInt();
     discount = record.value("discount").toInt();
@@ -34,6 +34,7 @@ UserInfo::UserInfo(const QSqlRecord &record)
 
 void UserInfo::fillSqlData(QStringList &fields, QVariantList &values)
 {
+    fields << "user_id"; values << userId;
     fields << "type"; values << type;
     fields << "name"; values << QString("%1##%2##%3").arg(firstName).arg(middleName).arg(lastName);
     fields << "passport_series"; values << passportSeries;
@@ -79,8 +80,10 @@ QString UserInfo::createCardNumber()
     QVariant baseMaxCardNumber;
     if (SqlUtils::getInstance()->sqlValue(db.get(), command, baseMaxCardNumber))
     {
+        SqlManager::getInstance().closeDB();
         return QString::number(baseMaxCardNumber.toLongLong() + 1);
     }
+    SqlManager::getInstance().closeDB();
 
     return QString();
 }
@@ -99,8 +102,6 @@ FullUserInfo::FullUserInfo(const QSqlRecord &record) : UserInfo(record)
 
 void FullUserInfo::fillSqlData(QStringList &fields, QVariantList &values)
 {
-    UserInfo::fillSqlData(fields, values);
-
     fields << "login"; values << login;
     fields << "password"; values << password;
 }

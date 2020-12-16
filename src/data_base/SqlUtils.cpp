@@ -38,6 +38,7 @@ bool SqlUtils::sqlTable(QSqlDatabase *db, const QString &command, QList<QSqlReco
     if (!query.exec(command))
     {
         qDebug() << QString("Error execute query: %1").arg(query.lastQuery());
+        qDebug() << "SqLite error:" << query.lastError().text() << ", SqLite error code:" << query.lastError().nativeErrorCode();
         finishQuery(query);
         return false;
     }
@@ -55,7 +56,7 @@ bool SqlUtils::sqlTable(QSqlDatabase *db, const QString &command, QList<QSqlReco
     return true;
 }
 
-bool SqlUtils::sqlInsert(QSqlDatabase *db, const QString &table, const QStringList &fields, const QStringList &values)
+bool SqlUtils::sqlInsert(QSqlDatabase *db, const QString &table, const QStringList &fields, const QVariantList &values)
 {
     if (!db)
     {
@@ -69,9 +70,33 @@ bool SqlUtils::sqlInsert(QSqlDatabase *db, const QString &table, const QStringLi
         return false;
     }
 
-    QString command = QString("INSERT INTO %1 (%2) VALUES (%3)").arg(table).arg(fields.join(",")).arg(values.join(","));
+    QStringList prepareFields;
+    foreach (QString field, fields)
+    {
+        prepareFields.append(QString(":%1").arg(field));
+    }
 
-    return execCommand(db, command);
+    QString command = QString("INSERT INTO %1 (%2) VALUES (%3)").arg(table).arg(fields.join(",")).arg(prepareFields.join(","));
+
+    QSqlQuery query(*db);
+    query.prepare(command);
+
+    for (int i = 0; i < prepareFields.count(); i++)
+    {
+        query.bindValue(prepareFields.at(i), values.at(i));
+    }
+
+    if (!query.exec())
+    {
+        qDebug() << QString("Error execute query: %1").arg(query.lastQuery());
+        qDebug() << "SqLite error:" << query.lastError().text() << ", SqLite error code:" << query.lastError().nativeErrorCode();
+        finishQuery(query);
+        return false;
+    }
+
+    finishQuery(query);
+
+    return true;
 }
 
 bool SqlUtils::sqlUpdate(QSqlDatabase *db, const QString &table, const QStringList &fields, const QStringList &values, const QString &filter)
@@ -148,6 +173,7 @@ bool SqlUtils::sqlValue(QSqlDatabase *db, const QString &command, QVariant &resu
 bool SqlUtils::sqlIsExist(QSqlDatabase *db, const QString &table, const QStringList &fields, const QStringList &values)
 {
     qDebug("SqlUtils::sqlIsExist");
+
     if (!db)
     {
         qDebug("Error sql insert: data base is not initialize.");
@@ -164,15 +190,13 @@ bool SqlUtils::sqlIsExist(QSqlDatabase *db, const QString &table, const QStringL
 
     for (int i = 0; i < fields.count(); i++)
     {
-        preparedValues.append(QString("%1=%2").arg(fields.at(i)).arg(values.at(i)));
+        preparedValues.append(QString("%1='%2'").arg(fields.at(i)).arg(values.at(i)));
     }
 
-    QString command = QString("SELECT * FROM %1 WHERE %2").arg(table).arg(preparedValues.join(" AND "));
-
-    QSqlQuery query(*db);
-    if (query.exec(command))
+    QList<QSqlRecord> records;
+    if (sqlTable(db, QString("SELECT * FROM %1 WHERE %2").arg(table).arg(preparedValues.join(" AND ")), records))
     {
-        if(query.next())
+        if (!records.isEmpty())
         {
             return true;
         }
@@ -181,10 +205,10 @@ bool SqlUtils::sqlIsExist(QSqlDatabase *db, const QString &table, const QStringL
     return false;
 }
 
-qlonglong SqlUtils::getLastTableId(QSqlDatabase *db)
+qlonglong SqlUtils::getLastTableId(QSqlDatabase *db, const QString &table)
 {
     QVariant result = 0;
-    sqlValue(db, QString("SELECT last_index_rowid()"), result);
+    sqlValue(db, QString("SELECT MAX(id) FROM %1").arg(table), result);
 
     return result.toLongLong();
 }

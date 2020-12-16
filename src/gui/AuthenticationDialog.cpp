@@ -61,20 +61,6 @@ void AuthenticationDialog::init()
 void AuthenticationDialog::slotAccept()
 {
     QString message = "";
-    if (loginEdit->text().isEmpty())
-    {
-        message = QString("Пожалуйста, введите логин");
-    }
-
-    if (passwordEdit->text().isEmpty()
-        && loginEdit->text().isEmpty())
-    {
-        message = QString("%1 %2").arg(message).arg(QString("и пароль"));
-    }
-    else if (passwordEdit->text().isEmpty())
-    {
-        message = QString("Пожалуйста, введите пароль");
-    }
 
     std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
     if (!SqlUtils::getInstance()->sqlIsExist(db.get(), "users", QStringList() << "login" << "password",
@@ -97,9 +83,5 @@ void AuthenticationDialog::slotAccept()
 void AuthenticationDialog::slotRegister()
 {
     RegistrationDialog regDlg(this);
-
-    if (regDlg.exec() == QDialog::Accepted)
-    {
-
-    }
+    regDlg.exec();
 }
