@@ -23,6 +23,7 @@ SOURCES += \
     main.cpp \
     src/gui/MessageDialog.cpp \
     src/gui/RegistrationDialog.cpp \
+    src/gui/bottom_widgets/AddEditBottomWidgetDialog.cpp \
     src/gui/bottom_widgets/author/AuthorModel.cpp \
     src/gui/bottom_widgets/author/AuthorTable.cpp \
     src/gui/bottom_widgets/author/AuthorWidget.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     src/MainIncludes.h \
     src/gui/MessageDialog.h \
     src/gui/RegistrationDialog.h \
+    src/gui/bottom_widgets/AddEditBottomWidgetDialog.h \
     src/gui/bottom_widgets/BottomModel.h \
     src/gui/bottom_widgets/BottomTable.h \
     src/gui/bottom_widgets/BottomWidget.h \

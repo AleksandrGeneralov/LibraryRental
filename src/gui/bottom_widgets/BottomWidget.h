@@ -6,6 +6,7 @@
 
 #include "BottomModel.h"
 #include "BottomTable.h"
+#include "AddEditBottomWidgetDialog.h"
 
 class BottomWidget : public QWidget
 {
@@ -17,6 +18,7 @@ protected:
 
     QPushButton *addButton;
     QPushButton *removeButton;
+    QPushButton *editButton;
 
     BottomTable *table;
     BottomModel *model;
@@ -27,14 +29,16 @@ protected:
         mainLay = new QVBoxLayout();
         this->setLayout(mainLay);
 
-//        buttonLay = new QHBoxLayout();
+        addButton = new QPushButton(QString("Добавить"), this);
+        removeButton = new QPushButton(QString("Удалить"), this);
+        editButton = new QPushButton(QString("Редактировать"), this);
 
-//        addButton = new QPushButton(QString("Добавить"), this);
-//        removeButton = new QPushButton(QString("Удалить"), this);
-
-//        buttonLay->addWidget(addButton);
-//        buttonLay->addWidget(removeButton);
-//        mainLay->addLayout(buttonLay);
+        buttonLay = new QHBoxLayout();
+        buttonLay->addWidget(addButton);
+        buttonLay->addWidget(removeButton);
+        buttonLay->addWidget(editButton);
+        buttonLay->addStretch();
+        mainLay->addLayout(buttonLay);
     }
 };
 

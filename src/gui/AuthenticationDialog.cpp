@@ -69,6 +69,7 @@ void AuthenticationDialog::slotAccept()
     {
         message = QString("Неправильный логин/пароль");
     }
+    SqlManager::getInstance().closeDB();
 
     if (!message.isEmpty())
     {
