@@ -1,21 +1,82 @@
 #include "PublishingModel.h"
 
+#include "data_base/SqlManager.h"
+#include "../../MessageDialog.h"
+
 PublishingModel::PublishingModel(QObject *parent)
     : BottomModel(parent)
 {
 
 }
 
-void PublishingModel::setData(BaseDataInfos &publishings)
+void PublishingModel::setItems()
 {
-    this->publishings.clear();
+    qDebug("PublishingModel::setData");
+    std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
 
-    beginResetModel();
-    foreach (auto &publishing, publishings)
+    QList<QSqlRecord> records;
+    if (SqlUtils::getInstance()->sqlTable(db.get(), "SELECT * FROM publishing", records))
     {
-        this->publishings.append(publishing);
+        beginResetModel();
+        publishings.clear();
+        foreach (QSqlRecord record, records)
+        {
+            std::shared_ptr<Publishing> publishing = std::make_shared<Publishing>(record);
+            publishings.append(publishing);
+        }
+        endResetModel();
     }
-    endResetModel();
+    SqlManager::getInstance().closeDB();
+}
+
+void PublishingModel::addItem(std::shared_ptr<Publishing> publishing)
+{
+    std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+
+    QStringList fields;
+    QVariantList values;
+    publishing->fillSqlData(fields, values);
+
+    if (SqlUtils::getInstance()->sqlInsert(db.get(), "publishing", fields, values))
+    {
+        beginInsertRows(QModelIndex(), publishings.count(), publishings.count());
+        publishings.append(publishing);
+        endInsertRows();
+    }
+    else
+    {
+        MessageDialog::critical(nullptr, QString("Ошибка добавления в базу."));
+    }
+    SqlManager::getInstance().closeDB();
+}
+
+void PublishingModel::removeSelectedItem(const QModelIndex &indexRemove)
+{
+    int row = indexRemove.row();
+
+    if (row < publishings.count())
+    {
+        QString removeId = QString::number(publishings.at(row)->id);
+
+        beginResetModel();
+        publishings.removeAt(row);
+        endResetModel();
+
+        removeItemsFromBase(QStringList() << removeId);
+    }
+    else
+    {
+        MessageDialog::critical(nullptr, QString("Ошибка удаления."));
+    }
+}
+
+void PublishingModel::removeItemsFromBase(QStringList ids)
+{
+    std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+
+    SqlUtils::getInstance()->sqlExec(db.get(), QString("DELETE FROM publishing WHERE id=%1").arg(ids.join(",")));
+
+    SqlManager::getInstance().closeDB();
 }
 
 int PublishingModel::rowCount(const QModelIndex &parent) const

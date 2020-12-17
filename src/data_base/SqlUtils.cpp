@@ -27,6 +27,8 @@ SqlUtils *SqlUtils::getInstance()
 
 bool SqlUtils::sqlTable(QSqlDatabase *db, const QString &command, QList<QSqlRecord> &records)
 {
+    qDebug("SqlUtils::sqlTable");
+
     if (!db)
     {
         qDebug("Error sql insert: data base is not initialize.");

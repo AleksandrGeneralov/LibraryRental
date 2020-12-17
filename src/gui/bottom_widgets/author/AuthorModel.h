@@ -18,7 +18,7 @@ class AuthorModel : public BottomModel
 public:
     AuthorModel(QObject *parent = nullptr);
 
-    void setData(BaseDataInfos &authors);
+    void setItems(BaseDataInfos &authors);
 
 private:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

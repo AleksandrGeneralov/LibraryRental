@@ -6,7 +6,7 @@ AuthorModel::AuthorModel(QObject *parent)
 
 }
 
-void AuthorModel::setData(BaseDataInfos &authors)
+void AuthorModel::setItems(BaseDataInfos &authors)
 {
     this->authors.clear();
 

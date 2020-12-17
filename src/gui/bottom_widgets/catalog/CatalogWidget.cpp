@@ -17,4 +17,16 @@ void CatalogWidget::initUi()
     table->setModel(model);
 
     mainLay->addWidget(table);
+
+    connect(addButton, SIGNAL(clicked()), this, SLOT(slotAddButtonClicked()));
 }
+
+//void CatalogWidget::slotAddButtonClicked()
+//{
+//    AddEditBottomWidgetDialog addDlg(this);
+
+////    if (addDlg.exec() == QDialog::Accepted)
+////    {
+////        std::shared_ptr<BaseDataInfo> dataInfo = std::make_shared<
+////    }
+//}

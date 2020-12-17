@@ -12,6 +12,9 @@ public:
 
 private:
     void initUi();
+
+//private slots:
+//    void slotAddButtonClicked();
 };
 
 #endif // CATALOGWIDGET_H

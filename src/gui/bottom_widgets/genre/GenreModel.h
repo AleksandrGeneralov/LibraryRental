@@ -13,18 +13,23 @@ class GenreModel : public BottomModel
 
     Q_OBJECT
 
-    QList<std::shared_ptr<BaseDataInfo>> genres;
+    QList<std::shared_ptr<Genre>> genres;
 
 public:
     GenreModel(QObject *parent = nullptr);
 
-    void setData(BaseDataInfos &genres);
+    void setItems();
+    void addItem(std::shared_ptr<Genre> genre);
+    void removeSelectedItem(const QModelIndex &indexRemove);
+
+private:
+    void removeItemsFromBase(QStringList ids);
 
 private:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &index, int role) const;
 };
 
 #endif // GENREMODEL_H

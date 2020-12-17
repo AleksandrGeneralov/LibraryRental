@@ -12,6 +12,8 @@ protected:
     BottomTable(QWidget *parent = nullptr) : QTableView(parent)
     {
         horizontalHeader()->setStretchLastSection(true);
+        setSelectionBehavior(QAbstractItemView::SelectRows);
+        setSelectionMode(QAbstractItemView::SingleSelection);
     }
 
 };

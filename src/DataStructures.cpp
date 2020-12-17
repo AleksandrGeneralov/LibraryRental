@@ -106,8 +106,14 @@ void FullUserInfo::fillSqlData(QStringList &fields, QVariantList &values)
     fields << "password"; values << password;
 }
 
+Genre::Genre()
+{
+    name = "";
+}
+
 Genre::Genre(const QSqlRecord &record)
 {
+    qDebug("Genre::Genre(const QSqlRecord &record)");
     id = record.value("id").toLongLong();
 
     name = record.value("name").toString();
@@ -116,6 +122,11 @@ Genre::Genre(const QSqlRecord &record)
 void Genre::fillSqlData(QStringList &fields, QVariantList &values)
 {
     fields << "name"; values << name;
+}
+
+Publishing::Publishing()
+{
+    name = "";
 }
 
 Publishing::Publishing(const QSqlRecord &record)

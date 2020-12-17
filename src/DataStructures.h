@@ -55,6 +55,7 @@ struct BaseDataInfo
 
 struct Genre : public BaseDataInfo
 {
+    Genre();
     Genre(const QSqlRecord &record);
 
     void fillSqlData(QStringList &fields, QVariantList &values);
@@ -62,6 +63,7 @@ struct Genre : public BaseDataInfo
 
 struct Publishing : public BaseDataInfo
 {
+    Publishing();
     Publishing(const QSqlRecord &record);
 
     void fillSqlData(QStringList &fields, QVariantList &values);

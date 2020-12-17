@@ -31,21 +31,21 @@ void SqlCreator::create(std::shared_ptr<QSqlDatabase> db)
                     "discount INTEGER(8)");
 
     createTable(db, "genres",
-                    "id INTEGER,"
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     "name VARCHAR(255)");
 
     createTable(db, "publishing",
-                    "id INTEGER,"
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     "name VARCHAR(255)");
 
     createTable(db, "authors",
-                    "id INTEGER,"
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     "first_name VARCHAR(255),"
                     "middle_name VARCHAR(255),"
                     "last_name VARCHAR(255)");
 
     createTable(db, "books",
-                    "id INTEGER,"
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     "name VARCHAR(255),"
                     "all_count INTEGER(8),"
                     "current_count INTEGER(8),"

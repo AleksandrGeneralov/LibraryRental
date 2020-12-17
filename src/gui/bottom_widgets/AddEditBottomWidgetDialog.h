@@ -5,7 +5,7 @@
 #include "../DialogIncludes.h"
 #include "DataStructures.h"
 
-class AddEditBottomWidgetDialog : public QWidget
+class AddEditBottomWidgetDialog : public QDialog
 {
     Q_OBJECT
 

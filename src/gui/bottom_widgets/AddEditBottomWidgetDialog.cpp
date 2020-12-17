@@ -1,7 +1,7 @@
 #include "AddEditBottomWidgetDialog.h"
 
 AddEditBottomWidgetDialog::AddEditBottomWidgetDialog(QWidget *parent)
-    : QWidget(parent)
+    : QDialog(parent)
 {
     initUi();
 }
@@ -26,6 +26,8 @@ void AddEditBottomWidgetDialog::initUi()
 
     buttonAccept = new QPushButton(QString("Применить"), this);
     buttonReject = new QPushButton(QString("Отмена"), this);
+    connect(buttonAccept, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(buttonReject, SIGNAL(clicked()), this, SLOT(reject()));
 
     buttonLay = new QHBoxLayout();
     buttonLay->addWidget(buttonAccept);

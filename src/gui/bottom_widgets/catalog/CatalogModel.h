@@ -23,7 +23,7 @@ class CatalogModel : public BottomModel
 public:
     explicit CatalogModel(QObject *parent = nullptr);
 
-    void setData(BaseDataInfos &books);
+    void setItems(BaseDataInfos &books);
 
 private:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

@@ -6,7 +6,7 @@ CatalogModel::CatalogModel(QObject *parent)
 
 }
 
-void CatalogModel::setData(BaseDataInfos &books)
+void CatalogModel::setItems(BaseDataInfos &books)
 {
     this->books.clear();
 
@@ -69,7 +69,7 @@ QVariant CatalogModel::data(const QModelIndex &index, int role) const
 {
     int column = index.column();
 
-    if (!index.isValid() || (column < 0 && column > books.count() - 1))
+    if (!index.isValid() || index.row() > books.count() - 1)
     {
         return QVariant();
     }

@@ -13,12 +13,17 @@ class PublishingModel : public BottomModel
 
     Q_OBJECT
 
-    QList<std::shared_ptr<BaseDataInfo>> publishings;
+    QList<std::shared_ptr<Publishing>> publishings;
 
 public:
     PublishingModel(QObject *parent = nullptr);
 
-    void setData(BaseDataInfos &publishings);
+    void setItems();
+    void addItem(std::shared_ptr<Publishing> publishing);
+    void removeSelectedItem(const QModelIndex &indexRemove);
+
+private:
+    void removeItemsFromBase(QStringList ids);
 
 private:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

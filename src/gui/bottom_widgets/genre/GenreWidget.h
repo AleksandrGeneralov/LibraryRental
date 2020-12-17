@@ -12,6 +12,11 @@ public:
 
 private:
     void initUi();
+    void setData();
+
+private slots:
+    void slotAddButtonClicked();
+    void slotRemoveButtonClicked();
 };
 
 #endif // GENREWIDGET_H
