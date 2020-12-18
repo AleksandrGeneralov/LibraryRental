@@ -88,7 +88,7 @@ struct Book : public BaseDataInfo
     int allCount;
     int currentCount;
 
-    QStringList genres;
+    QString genre;
     QString publishing;
     QStringList authors;
 

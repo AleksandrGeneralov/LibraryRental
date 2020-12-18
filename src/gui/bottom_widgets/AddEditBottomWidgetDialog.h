@@ -52,11 +52,22 @@ class AddEditBooksDialog : public AddEditBottomWidgetDialog
 {
     Q_OBJECT
 
-    QLabel *middleNameLabel;
-    QLineEdit *middleNameEdit;
+    QLabel *countLabel;
+    QLineEdit *countEdit;
 
-    QLabel *lastNameLabel;
-    QLineEdit *lastNameEdit;
+    QLabel *authorsLabelName;
+    QLabel *authorsLabelValue;
+    QPushButton *selectAuthorButton;
+
+    QLabel *publishingLabelName;
+    QLabel *publishingLabelValue;
+    QPushButton *selectPublishButton;
+
+    QLabel *genresLabelName;
+    QLabel *genresLabelValue;
+    QPushButton *selectGenresButton;
+
+
 
 public:
     explicit AddEditBooksDialog(QWidget *parent = nullptr);
@@ -65,6 +76,15 @@ public:
 
 protected:
     void initUi();
+
+private:
+    QPushButton *createButton(const char *slot);
+    QLabel *createLabelValue();
+
+private slots:
+    void slotAuthorButtonClick();
+    void slotPublishButtonClick();
+    void slotGenresButtonClick();
 };
 
 #endif // ADDEDITBOTTOMWIDGETDIALOG_H

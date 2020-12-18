@@ -203,7 +203,7 @@ Book::Book(const QSqlRecord &record)
     currentCount = record.value("current_count").toInt();
 
     name = record.value("name").toString();
-    setDataList(record.value("genres").toString(), genres);
+    genre = record.value("genres").toString();
     publishing = record.value("publishing").toString();
     setDataList(record.value("authors").toString(), authors);
 }

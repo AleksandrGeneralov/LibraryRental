@@ -24,6 +24,7 @@ SOURCES += \
     src/gui/MessageDialog.cpp \
     src/gui/RegistrationDialog.cpp \
     src/gui/bottom_widgets/AddEditBottomWidgetDialog.cpp \
+    src/gui/bottom_widgets/ChooseItemsDlg.cpp \
     src/gui/bottom_widgets/author/AuthorModel.cpp \
     src/gui/bottom_widgets/author/AuthorTable.cpp \
     src/gui/bottom_widgets/author/AuthorWidget.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     src/gui/bottom_widgets/BottomModel.h \
     src/gui/bottom_widgets/BottomTable.h \
     src/gui/bottom_widgets/BottomWidget.h \
+    src/gui/bottom_widgets/ChooseItemsDlg.h \
     src/gui/bottom_widgets/author/AuthorModel.h \
     src/gui/bottom_widgets/author/AuthorTable.h \
     src/gui/bottom_widgets/author/AuthorWidget.h \

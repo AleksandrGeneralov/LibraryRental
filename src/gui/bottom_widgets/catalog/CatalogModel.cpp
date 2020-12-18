@@ -138,7 +138,7 @@ QVariant CatalogModel::data(const QModelIndex &index, int role) const
         }
         else if (column == colGenres)
         {
-            return book->genres.join("\n");
+            return book->genre;
         }
         else if (column == colPublishing)
         {

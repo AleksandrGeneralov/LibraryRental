@@ -49,9 +49,9 @@ void SqlCreator::create(std::shared_ptr<QSqlDatabase> db)
                     "name VARCHAR(255),"
                     "all_count INTEGER(8),"
                     "current_count INTEGER(8),"
-                    "genres VARCHAR(255),"
+                    "genres_id INTEGER,"
                     "publishing_id INTEGER,"
-                    "authors VARCHAR(255)");
+                    "authors_id VARCHAR(255)");
 
     createTable(db, "books_history",
                     "book_id INTEGER,"
