@@ -18,12 +18,17 @@ class CatalogModel : public BottomModel
 
     Q_OBJECT
 
-    QList<std::shared_ptr<BaseDataInfo>> books;
+    QList<std::shared_ptr<Book>> books;
 
 public:
     explicit CatalogModel(QObject *parent = nullptr);
 
-    void setItems(BaseDataInfos &books);
+    void setItems();
+    void addItem(std::shared_ptr<Book> book);
+    void removeSelectedItem(const QModelIndex &indexRemove);
+
+private:
+    void removeItemsFromBase(QStringList ids);
 
 private:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

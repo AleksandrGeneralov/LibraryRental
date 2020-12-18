@@ -18,15 +18,31 @@ void CatalogWidget::initUi()
 
     mainLay->addWidget(table);
 
+    setData();
+
     connect(addButton, SIGNAL(clicked()), this, SLOT(slotAddButtonClicked()));
+    connect(removeButton, SIGNAL(clicked()), this, SLOT(slotRemoveButtonClicked()));
 }
 
-//void CatalogWidget::slotAddButtonClicked()
-//{
-//    AddEditBottomWidgetDialog addDlg(this);
+void CatalogWidget::setData()
+{
+    CatalogModel *curModel = static_cast<CatalogModel *>(model);
+    curModel->setItems();
+}
 
-////    if (addDlg.exec() == QDialog::Accepted)
-////    {
-////        std::shared_ptr<BaseDataInfo> dataInfo = std::make_shared<
-////    }
-//}
+void CatalogWidget::slotAddButtonClicked()
+{
+    AddEditBooksDialog addDlg(this);
+
+    if (addDlg.exec() == QDialog::Accepted)
+    {
+//        std::shared_ptr<BaseDataInfo> dataInfo = std::make_shared<
+    }
+}
+
+void CatalogWidget::slotRemoveButtonClicked()
+{
+    QModelIndex indexRemove = table->currentIndex();
+    CatalogModel *curModel = static_cast<CatalogModel *>(model);
+    curModel->removeSelectedItem(indexRemove);
+}

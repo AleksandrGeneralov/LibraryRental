@@ -141,6 +141,11 @@ void Publishing::fillSqlData(QStringList &fields, QVariantList &values)
     fields << "name"; values << name;
 }
 
+Author::Author()
+{
+
+}
+
 Author::Author(const QSqlRecord &record)
 {
     id = record.value("id").toLongLong();
@@ -154,7 +159,9 @@ Author::Author(const QSqlRecord &record)
 
 void Author::fillSqlData(QStringList &fields, QVariantList &values)
 {
-    fields << "name"; values << QString("%1##%2##%3").arg(firstName).arg(middleName).arg(lastName);
+    fields << "first_name"; values << firstName;
+    fields << "middle_name"; values << middleName;
+    fields << "last_name"; values << lastName;
 }
 
 void Author::setName()

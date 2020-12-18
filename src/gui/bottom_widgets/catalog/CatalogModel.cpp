@@ -1,21 +1,71 @@
 #include "CatalogModel.h"
 
+#include "data_base/SqlManager.h"
+#include "../../MessageDialog.h"
+
 CatalogModel::CatalogModel(QObject *parent)
     : BottomModel(parent)
 {
 
 }
 
-void CatalogModel::setItems(BaseDataInfos &books)
+void CatalogModel::setItems()
 {
-    this->books.clear();
+    std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
 
-    beginResetModel();
-    foreach (auto &book, books)
+    QList<QSqlRecord> records;
+    if (SqlUtils::getInstance()->sqlTable(db.get(), "SELECT * FROM books", records))
     {
-        this->books.append(book);
+        beginResetModel();
+        books.clear();
+        foreach (QSqlRecord record, records)
+        {
+            std::shared_ptr<Book> author = std::make_shared<Book>(record);
+            books.append(author);
+        }
+        endResetModel();
     }
-    endResetModel();
+    SqlManager::getInstance().closeDB();
+}
+
+void CatalogModel::addItem(std::shared_ptr<Book> book)
+{
+
+}
+
+void CatalogModel::removeSelectedItem(const QModelIndex &indexRemove)
+{
+    if (!indexRemove.isValid())
+    {
+        return;
+    }
+
+    int row = indexRemove.row();
+    qDebug() << row;
+
+    if (row < books.count())
+    {
+        QString removeId = QString::number(books.at(row)->id);
+
+        beginResetModel();
+        books.removeAt(row);
+        endResetModel();
+
+        removeItemsFromBase(QStringList() << removeId);
+    }
+    else
+    {
+        MessageDialog::critical(nullptr, QString("Ошибка удаления."));
+    }
+}
+
+void CatalogModel::removeItemsFromBase(QStringList ids)
+{
+    std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+
+    SqlUtils::getInstance()->sqlExec(db.get(), QString("DELETE FROM books WHERE id=%1").arg(ids.join(",")));
+
+    SqlManager::getInstance().closeDB();
 }
 
 int CatalogModel::rowCount(const QModelIndex &parent) const
@@ -102,6 +152,10 @@ QVariant CatalogModel::data(const QModelIndex &index, int role) const
         {
             return book->allCount;
         }
+    }
+    else if (role == Qt::TextAlignmentRole)
+    {
+        return Qt::AlignCenter;
     }
 
     return QVariant();

@@ -12,9 +12,11 @@ public:
 
 private:
     void initUi();
+    void setData();
 
-//private slots:
-//    void slotAddButtonClicked();
+private slots:
+    void slotAddButtonClicked();
+    void slotRemoveButtonClicked();
 };
 
 #endif // CATALOGWIDGET_H

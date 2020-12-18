@@ -52,6 +52,11 @@ void PublishingModel::addItem(std::shared_ptr<Publishing> publishing)
 
 void PublishingModel::removeSelectedItem(const QModelIndex &indexRemove)
 {
+    if (!indexRemove.isValid())
+    {
+        return;
+    }
+
     int row = indexRemove.row();
 
     if (row < publishings.count())
@@ -123,6 +128,10 @@ QVariant PublishingModel::data(const QModelIndex &index, int role) const
         {
             return publishing->name;
         }
+    }
+    else if (role == Qt::TextAlignmentRole)
+    {
+        return Qt::AlignCenter;
     }
 
     return QVariant();

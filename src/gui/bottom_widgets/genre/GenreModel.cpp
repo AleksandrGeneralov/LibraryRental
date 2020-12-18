@@ -51,6 +51,11 @@ void GenreModel::addItem(std::shared_ptr<Genre> genre)
 
 void GenreModel::removeSelectedItem(const QModelIndex &indexRemove)
 {
+    if (!indexRemove.isValid())
+    {
+        return;
+    }
+
     int row = indexRemove.row();
 
     if (row < genres.count())
@@ -122,6 +127,10 @@ QVariant GenreModel::data(const QModelIndex &index, int role) const
         {
             return genre->name;
         }
+    }
+    else if (role == Qt::TextAlignmentRole)
+    {
+        return Qt::AlignCenter;
     }
 
     return QVariant();

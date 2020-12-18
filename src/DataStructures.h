@@ -75,6 +75,7 @@ struct Author : public BaseDataInfo
     QString lastName;
     QString middleName;
 
+    Author();
     Author(const QSqlRecord &record);
 
     void fillSqlData(QStringList &fields, QVariantList &values);

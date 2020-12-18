@@ -13,6 +13,7 @@ void AddEditBottomWidgetDialog::fillData(std::shared_ptr<BaseDataInfo> dataInfo)
 
 void AddEditBottomWidgetDialog::initUi()
 {
+    setMinimumWidth(300);
     mainLay = new QVBoxLayout();
     this->setLayout(mainLay);
 

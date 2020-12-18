@@ -7,18 +7,25 @@ class AuthorModel : public BottomModel
 {
     enum AuthorColumns
     {
-        colName = 0,
-        colCount = 1
+        colFirstName = 0,
+        colMiddleName = 1,
+        colLastName = 2,
+        colCount = 3
     };
 
     Q_OBJECT
 
-    QList<std::shared_ptr<BaseDataInfo>> authors;
+    QList<std::shared_ptr<Author>> authors;
 
 public:
     AuthorModel(QObject *parent = nullptr);
 
-    void setItems(BaseDataInfos &authors);
+    void setItems();
+    void addItem(std::shared_ptr<Author> author);
+    void removeSelectedItem(const QModelIndex &indexRemove);
+
+private:
+    void removeItemsFromBase(QStringList ids);
 
 private:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
