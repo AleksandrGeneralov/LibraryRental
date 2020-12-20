@@ -32,11 +32,11 @@ void SqlCreator::create(std::shared_ptr<QSqlDatabase> db)
 
     createTable(db, "genres",
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    "name VARCHAR(255)");
+                    "name_genre VARCHAR(255)");
 
     createTable(db, "publishing",
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    "name VARCHAR(255)");
+                    "name_publishing VARCHAR(255)");
 
     createTable(db, "authors",
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"

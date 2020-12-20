@@ -1,7 +1,9 @@
 #include "ChooseItemsDlg.h"
 
-ChooseItemsDlg::ChooseItemsDlg(QMap<qlonglong, QString> dataMap, QWidget *parent)
-    : QDialog(parent)
+#include <QDebug>
+
+ChooseItemsDlg::ChooseItemsDlg(QMap<qlonglong, QString> dataMap, bool isChecked, QWidget *parent)
+    : QDialog(parent), isChecked(isChecked)
 {
     initUi(dataMap);
 }
@@ -38,8 +40,15 @@ void ChooseItemsDlg::setItemsValue(QMap<qlonglong, QString> dataMap)
     {
         QListWidgetItem *item = new QListWidgetItem(data);
         item->setData(id, dataMap.key(data));
-        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
-        item->setCheckState(Qt::Unchecked);
+        if (isChecked)
+        {
+            item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+            item->setCheckState(Qt::Unchecked);
+        }
+        else
+        {
+            item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+        }
         items->addItem(item);
     }
 }
@@ -47,6 +56,32 @@ void ChooseItemsDlg::setItemsValue(QMap<qlonglong, QString> dataMap)
 QMap<qlonglong, QString> ChooseItemsDlg::getCheckedMap()
 {
     return checkedMap;
+}
+
+void ChooseItemsDlg::setChecked(QMap<qlonglong, QString> checkedItems)
+{
+    for (int i = 0; i < items->count(); i++)
+    {
+        QListWidgetItem *item = items->item(i);
+        qlonglong itemId = item->data(id).toLongLong();
+        if (checkedItems.contains(itemId))
+        {
+            item->setCheckState(Qt::Checked);
+        }
+    }
+}
+
+QMap<qlonglong, QString> ChooseItemsDlg::getSelected()
+{
+    QMap<qlonglong, QString> curMap;
+
+    QListWidgetItem *item = items->currentItem();
+    if (item)
+    {
+        curMap.insert(item->data(id).toLongLong(), item->text().trimmed());
+    }
+
+    return curMap;
 }
 
 void ChooseItemsDlg::slotItemChange(QListWidgetItem *item)

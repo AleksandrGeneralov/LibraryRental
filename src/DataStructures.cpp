@@ -116,12 +116,12 @@ Genre::Genre(const QSqlRecord &record)
     qDebug("Genre::Genre(const QSqlRecord &record)");
     id = record.value("id").toLongLong();
 
-    name = record.value("name").toString();
+    name = record.value("name_genre").toString();
 }
 
 void Genre::fillSqlData(QStringList &fields, QVariantList &values)
 {
-    fields << "name"; values << name;
+    fields << "name_genre"; values << name;
 }
 
 Publishing::Publishing()
@@ -133,12 +133,12 @@ Publishing::Publishing(const QSqlRecord &record)
 {
     id = record.value("id").toLongLong();
 
-    name = record.value("name").toString();
+    name = record.value("name_publishing").toString();
 }
 
 void Publishing::fillSqlData(QStringList &fields, QVariantList &values)
 {
-    fields << "name"; values << name;
+    fields << "name_publishing"; values << name;
 }
 
 Author::Author()
@@ -195,7 +195,7 @@ Book::Book()
 
 }
 
-Book::Book(const QSqlRecord &record)
+Book::Book(const QSqlRecord &record, QList<QSqlRecord> authorRecords)
 {
     id = record.value("id").toLongLong();
 
@@ -203,33 +203,14 @@ Book::Book(const QSqlRecord &record)
     currentCount = record.value("current_count").toInt();
 
     name = record.value("name").toString();
-    genre = record.value("genres").toString();
-    publishing = record.value("publishing").toString();
-    setDataList(record.value("authors").toString(), authors);
-}
+    genre = record.value("name_genre").toString();
+    publishing = record.value("name_publishing").toString();
 
-void Book::fillSqlData(QStringList &fields, QVariantList &values)
-{
-    Q_UNUSED(fields)
-    Q_UNUSED(values)
-//    fields << "name"; values << name;
-//    fields << "all_count"; values << allCount;
-//    fields << "current_count"; values << currentCount;
-//    fields << "genres"; values << genres;
-//    fields << "authors"; values << authors;
-}
-
-void Book::setDataList(const QString &data, QStringList &list)
-{
-    if (data.isEmpty())
+    qDebug() << authorRecords.count();
+    foreach (QSqlRecord rec, authorRecords)
     {
-        return;
+        std::unique_ptr<Author> author = std::make_unique<Author>(rec);
+        authors << author->name;
     }
-
-    list = data.split("##");
-
-    if (list.last().isEmpty())
-    {
-        list.removeLast();
-    }
+    qDebug() << "authors: " << authors;
 }

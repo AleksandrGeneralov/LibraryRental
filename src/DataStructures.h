@@ -93,11 +93,7 @@ struct Book : public BaseDataInfo
     QStringList authors;
 
     Book();
-    Book(const QSqlRecord &record);
-
-    void fillSqlData(QStringList &fields, QVariantList &values);
-
-    void setDataList(const QString &data, QStringList &list);
+    Book(const QSqlRecord &record, QList<QSqlRecord> authorRecords);
 };
 
 typedef QList<std::shared_ptr<BaseDataInfo>> BaseDataInfos;

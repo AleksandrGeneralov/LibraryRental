@@ -27,6 +27,9 @@ public:
 
 protected:
     void initUi();
+
+private slots:
+    void slotAccept();
 };
 
 class AddEditAuthorDialog : public AddEditBottomWidgetDialog
@@ -46,11 +49,21 @@ public:
 
 protected:
     void initUi();
+
+private slots:
+    void slotAccept();
 };
 
 class AddEditBooksDialog : public AddEditBottomWidgetDialog
 {
     Q_OBJECT
+
+    enum HashTypes
+    {
+        typeAuthors = 0,
+        typePublishing = 1,
+        typeGenres = 2
+    };
 
     QLabel *countLabel;
     QLineEdit *countEdit;
@@ -67,12 +80,13 @@ class AddEditBooksDialog : public AddEditBottomWidgetDialog
     QLabel *genresLabelValue;
     QPushButton *selectGenresButton;
 
-
+    QHash<int, QMap<qlonglong, QString>> selectedParams;
 
 public:
     explicit AddEditBooksDialog(QWidget *parent = nullptr);
 
     void fillData(std::shared_ptr<BaseDataInfo> dataInfo);
+    bool addToBase();
 
 protected:
     void initUi();
@@ -81,10 +95,13 @@ private:
     QPushButton *createButton(const char *slot);
     QLabel *createLabelValue();
 
+    QStringList getChooseAuthorsId();
+
 private slots:
     void slotAuthorButtonClick();
     void slotPublishButtonClick();
     void slotGenresButtonClick();
+    void slotAccept();
 };
 
 #endif // ADDEDITBOTTOMWIDGETDIALOG_H

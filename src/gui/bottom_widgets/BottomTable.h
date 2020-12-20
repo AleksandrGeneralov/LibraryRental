@@ -14,6 +14,7 @@ protected:
         horizontalHeader()->setStretchLastSection(true);
         setSelectionBehavior(QAbstractItemView::SelectRows);
         setSelectionMode(QAbstractItemView::SingleSelection);
+        resizeRowsToContents();
     }
 
 };

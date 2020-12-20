@@ -36,7 +36,13 @@ void CatalogWidget::slotAddButtonClicked()
 
     if (addDlg.exec() == QDialog::Accepted)
     {
-//        std::shared_ptr<BaseDataInfo> dataInfo = std::make_shared<
+        CatalogModel *curModel = static_cast<CatalogModel *>(model);
+        std::shared_ptr<Book> dataInfo = std::make_shared<Book>();
+        addDlg.fillData(dataInfo);
+        if (addDlg.addToBase())
+        {
+            curModel->addItem(dataInfo);
+        }
     }
 }
 

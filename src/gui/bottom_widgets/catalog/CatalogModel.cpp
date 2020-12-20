@@ -13,24 +13,46 @@ void CatalogModel::setItems()
 {
     std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
 
+    QString query = QString("SELECT * FROM books LEFT JOIN genres ON books.genres_id=genres.id");
+    query += QString(" LEFT JOIN publishing ON books.publishing_id=publishing.id");
+//    query += QString(" LEFT JOIN authors ON authors.id IN (books.authors_id)");
+
     QList<QSqlRecord> records;
-    if (SqlUtils::getInstance()->sqlTable(db.get(), "SELECT * FROM books", records))
+    if (SqlUtils::getInstance()->sqlTable(db.get(), query, records))
     {
-        beginResetModel();
-        books.clear();
-        foreach (QSqlRecord record, records)
+        qDebug() << records.count();
+        if (records.count() > 0)
         {
-            std::shared_ptr<Book> author = std::make_shared<Book>(record);
-            books.append(author);
+            QSqlRecord rec = records.first();
+            qDebug() << rec.count();
+            beginResetModel();
+            books.clear();
+            foreach (QSqlRecord record, records)
+            {
+                QList<QSqlRecord> authorRecords;
+                if (SqlUtils::getInstance()->sqlTable(db.get(), QString("SELECT * FROM authors WHERE id IN (%1)")
+                                                                .arg(record.value("authors_id").toString()), authorRecords))
+                {
+                    if (authorRecords.isEmpty())
+                    {
+                        continue;
+                    }
+
+                    std::shared_ptr<Book> author = std::make_shared<Book>(record, authorRecords);
+                    books.append(author);
+                }
+            }
+            endResetModel();
         }
-        endResetModel();
     }
     SqlManager::getInstance().closeDB();
 }
 
 void CatalogModel::addItem(std::shared_ptr<Book> book)
 {
-
+    beginInsertRows(QModelIndex(), books.count(), books.count());
+    books.append(book);
+    endInsertRows();
 }
 
 void CatalogModel::removeSelectedItem(const QModelIndex &indexRemove)

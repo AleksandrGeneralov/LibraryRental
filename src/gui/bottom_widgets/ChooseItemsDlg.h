@@ -16,17 +16,19 @@ class ChooseItemsDlg : public QDialog
 
     QMap<qlonglong, QString> checkedMap;
     QListWidget *items;
+    bool isChecked;
 
 public:
-    explicit ChooseItemsDlg(QMap<qlonglong, QString> dataMap, QWidget *parent = nullptr);
+    explicit ChooseItemsDlg(QMap<qlonglong, QString> dataMap, bool isChecked = false, QWidget *parent = nullptr);
 
     QMap<qlonglong, QString> getCheckedMap();
+    void setChecked(QMap<qlonglong, QString> checkedItems);
+    QMap<qlonglong, QString> getSelected();
 
 private:
     void initUi(QMap<qlonglong, QString> dataMap);
 
     void setItemsValue(QMap<qlonglong, QString> dataMap);
-
 
 private slots:
     void slotItemChange(QListWidgetItem *item);
