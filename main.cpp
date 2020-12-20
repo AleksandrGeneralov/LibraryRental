@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
 
     if (authDlg.exec() == QDialog::Accepted)
     {
+        w.setUser(authDlg.getUser());
         w.show();
     }
     else

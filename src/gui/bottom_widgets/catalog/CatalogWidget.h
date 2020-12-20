@@ -7,8 +7,10 @@ class CatalogWidget : public BottomWidget
 {
     Q_OBJECT
 
+    qlonglong userId;
+
 public:
-    CatalogWidget(QWidget *parent = nullptr);
+    CatalogWidget(qlonglong userId, QWidget *parent = nullptr);
 
 private:
     void initUi();
@@ -17,6 +19,7 @@ private:
 private slots:
     void slotAddButtonClicked();
     void slotRemoveButtonClicked();
+    void slotTakeButtonClicked();
 };
 
 #endif // CATALOGWIDGET_H

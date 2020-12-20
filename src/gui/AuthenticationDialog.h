@@ -3,6 +3,7 @@
 
 #include "DialogIncludes.h"
 #include "MainIncludes.h"
+#include "DataStructures.h"
 
 class AuthenticationDialog : public QDialog
 {
@@ -11,8 +12,12 @@ class AuthenticationDialog : public QDialog
     QPointer<QLineEdit> loginEdit;
     QPointer<QLineEdit> passwordEdit;
 
+    std::unique_ptr<FullUserInfo> user;
+
 public:
     explicit AuthenticationDialog(QPointer<QWidget> parent = nullptr);
+
+    std::unique_ptr<FullUserInfo> getUser();
 
 private:
     void init();

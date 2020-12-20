@@ -9,6 +9,11 @@ AuthenticationDialog::AuthenticationDialog(QPointer<QWidget> parent)
     init();
 }
 
+std::unique_ptr<FullUserInfo> AuthenticationDialog::getUser()
+{
+    return std::move(user);
+}
+
 void AuthenticationDialog::init()
 {
     this->setFixedSize(200, 180);
@@ -68,6 +73,30 @@ void AuthenticationDialog::slotAccept()
                                             << passwordEdit->text().trimmed()))
     {
         message = QString("Неправильный логин/пароль");
+    }
+
+    if (message.isEmpty())
+    {
+        QString query = QString("SELECT * FROM users LEFT JOIN users_info ON users.id=users_info.user_id"
+                                " WHERE users.login='%1' AND users.password='%2'")
+                                .arg(loginEdit->text().trimmed())
+                                .arg(passwordEdit->text().trimmed());
+        QList<QSqlRecord> records;
+        if (SqlUtils::getInstance()->sqlTable(db.get(), query, records))
+        {
+            if (records.isEmpty())
+            {
+                return;
+            }
+
+            user.reset();
+            user = std::make_unique<FullUserInfo>(records.first());
+        }
+        else
+        {
+            MessageDialog::critical(this, QString("Ошибка запроса к БД."));
+            return;
+        }
     }
     SqlManager::getInstance().closeDB();
 

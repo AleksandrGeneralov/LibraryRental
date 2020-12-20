@@ -3,8 +3,8 @@
 #include "CatalogTable.h"
 #include "CatalogModel.h"
 
-CatalogWidget::CatalogWidget(QWidget *parent)
-    : BottomWidget(parent)
+CatalogWidget::CatalogWidget(qlonglong userId, QWidget *parent)
+    : BottomWidget(parent), userId(userId)
 {
     initUi();
 }
@@ -12,11 +12,15 @@ CatalogWidget::CatalogWidget(QWidget *parent)
 void CatalogWidget::initUi()
 {
     table = new CatalogTable(this);
-    model = new CatalogModel(table);
+    model = new CatalogModel(typeCatalog, table);
 
     table->setModel(model);
 
     mainLay->addWidget(table);
+
+    QPushButton *takeButton = new QPushButton(QString("Взять в прокат"), this);
+    connect(takeButton, SIGNAL(clicked()), this, SLOT(slotTakeButtonClicked()));
+    buttonLay->addWidget(takeButton);
 
     setData();
 
@@ -51,4 +55,11 @@ void CatalogWidget::slotRemoveButtonClicked()
     QModelIndex indexRemove = table->currentIndex();
     CatalogModel *curModel = static_cast<CatalogModel *>(model);
     curModel->removeSelectedItem(indexRemove);
+}
+
+void CatalogWidget::slotTakeButtonClicked()
+{
+    QModelIndex indexTake = table->currentIndex();
+    CatalogModel *curModel = static_cast<CatalogModel *>(model);
+    curModel->takeSelectedItem(indexTake, userId);
 }

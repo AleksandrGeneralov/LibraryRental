@@ -3,8 +3,8 @@
 #include "data_base/SqlManager.h"
 #include "../../MessageDialog.h"
 
-CatalogModel::CatalogModel(QObject *parent)
-    : BottomModel(parent)
+CatalogModel::CatalogModel(int type, QObject *parent)
+    : BottomModel(parent), type(type)
 {
 
 }
@@ -63,7 +63,6 @@ void CatalogModel::removeSelectedItem(const QModelIndex &indexRemove)
     }
 
     int row = indexRemove.row();
-    qDebug() << row;
 
     if (row < books.count())
     {
@@ -78,6 +77,71 @@ void CatalogModel::removeSelectedItem(const QModelIndex &indexRemove)
     else
     {
         MessageDialog::critical(nullptr, QString("Ошибка удаления."));
+    }
+}
+
+void CatalogModel::takeSelectedItem(const QModelIndex &indexRemove, const qlonglong &userId)
+{
+    if (!indexRemove.isValid())
+    {
+        return;
+    }
+
+    int row = indexRemove.row();
+    if (row < books.count())
+    {
+        if (books.at(row)->currentCount == 0)
+        {
+            MessageDialog::information(nullptr, QString("Книга отсутствует в библиотеке."));
+            return;
+        }
+        qlonglong bookId = books.at(row)->id;
+
+        std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+        if (!SqlUtils::getInstance()->sqlInsert(db.get(), "books_history",
+            QStringList() << "book_id" << "client_id", QVariantList() << userId << bookId))
+        {
+            MessageDialog::critical(nullptr, QString("Ошибка добавления в базу."));
+            return;
+        }
+        books.at(row)->currentCount = books.at(row)->currentCount - 1;
+        SqlUtils::getInstance()->sqlUpdate(db.get(), "books", QStringList() << "current_count",
+                                           QStringList() << QString::number(books.at(row)->currentCount));
+        SqlManager::getInstance().closeDB();
+    }
+    else
+    {
+        MessageDialog::critical(nullptr, QString("Ошибка."));
+    }
+}
+
+void CatalogModel::returnSelectedItem(const QModelIndex &indexRemove, const qlonglong &userId)
+{
+    if (!indexRemove.isValid())
+    {
+        return;
+    }
+
+    int row = indexRemove.row();
+
+    if (row < books.count())
+    {
+        QString removeId = QString::number(books.at(row)->id);
+
+        std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+        SqlUtils::getInstance()->sqlExec(db.get(), QString("DELETE FROM books_history WHERE book_id=%1 AND client_id=%2").arg(removeId)
+                                                                                                                         .arg(QString::number(userId)));
+        SqlUtils::getInstance()->sqlUpdate(db.get(), "books", QStringList() << "current_count",
+                                           QStringList() << QString::number(books.at(row)->currentCount + 1));
+        SqlManager::getInstance().closeDB();
+
+        beginResetModel();
+        books.removeAt(row);
+        endResetModel();
+    }
+    else
+    {
+        MessageDialog::critical(nullptr, QString("Ошибка возврата."));
     }
 }
 
@@ -100,6 +164,11 @@ int CatalogModel::rowCount(const QModelIndex &parent) const
 int CatalogModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
+
+    if (type == typePersonal)
+    {
+        return colCurrCount;
+    }
 
     return colCount;
 }

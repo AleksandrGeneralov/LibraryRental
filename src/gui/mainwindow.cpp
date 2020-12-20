@@ -16,16 +16,21 @@ MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::setUser(std::unique_ptr<FullUserInfo> user)
+{
+    this->user = std::move(user);
+}
+
 void MainWindow::initUi()
 {
     setMinimumSize(600, 600);
-    mainWidget = new QWidget();
+    mainWidget = new QWidget(this);
     mainLay = new QVBoxLayout();
     mainWidget->setLayout(mainLay);
 
     createButtonLayout(mainWidget);
+    bottomWidget = std::make_unique<AuthorWidget>(mainWidget);
 
-    bottomWidget = std::make_unique<CatalogWidget>(mainWidget);
     mainLay->addWidget(bottomWidget.get());
 
     this->setCentralWidget(mainWidget);
@@ -81,6 +86,15 @@ void MainWindow::deleteBottomWidget()
     }
 }
 
+void MainWindow::deleteCatalogWidget()
+{
+    if (personalWidget)
+    {
+        qDebug("delete bottom widget");
+        personalWidget.reset();
+    }
+}
+
 QString MainWindow::setFrameStyleSheet()
 {
     return QString("QFrame"
@@ -92,22 +106,25 @@ QString MainWindow::setFrameStyleSheet()
 void MainWindow::slotCatalogButtonClicked()
 {
     deleteBottomWidget();
+    deleteCatalogWidget();
 
-    bottomWidget = std::make_unique<CatalogWidget>(mainWidget);
+    bottomWidget = std::make_unique<CatalogWidget>(user->userId, mainWidget);
     mainLay->addWidget(bottomWidget.get());
 }
 
 void MainWindow::slotPersonalButtonClicked()
 {
     deleteBottomWidget();
+    deleteCatalogWidget();
 
-    bottomWidget = std::make_unique<PersonalWidget>(mainWidget);
-    mainLay->addWidget(bottomWidget.get());
+    personalWidget = std::make_unique<PersonalWidget>(user.get(), mainWidget);
+    mainLay->addWidget(personalWidget.get());
 }
 
 void MainWindow::slotGenresButtonClicked()
 {
     deleteBottomWidget();
+    deleteCatalogWidget();
 
     bottomWidget = std::make_unique<GenreWidget>(mainWidget);
     mainLay->addWidget(bottomWidget.get());
@@ -116,6 +133,7 @@ void MainWindow::slotGenresButtonClicked()
 void MainWindow::slotAuthorButtonClicked()
 {
     deleteBottomWidget();
+    deleteCatalogWidget();
 
     bottomWidget = std::make_unique<AuthorWidget>(mainWidget);
     mainLay->addWidget(bottomWidget.get());
@@ -124,6 +142,7 @@ void MainWindow::slotAuthorButtonClicked()
 void MainWindow::slotPublishingButtonClicked()
 {
     deleteBottomWidget();
+    deleteCatalogWidget();
 
     bottomWidget = std::make_unique<PublishingWidget>(mainWidget);
     mainLay->addWidget(bottomWidget.get());

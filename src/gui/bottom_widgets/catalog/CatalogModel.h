@@ -3,8 +3,15 @@
 
 #include "../BottomModel.h"
 
+enum CatalogType
+{
+    typeCatalog = 0,
+    typePersonal = 1
+};
+
 class CatalogModel : public BottomModel
 {
+
     enum CatalogColumns
     {
         colName = 0,
@@ -20,12 +27,16 @@ class CatalogModel : public BottomModel
 
     QList<std::shared_ptr<Book>> books;
 
+    int type;
+
 public:
-    explicit CatalogModel(QObject *parent = nullptr);
+    explicit CatalogModel(int type, QObject *parent = nullptr);
 
     void setItems();
     void addItem(std::shared_ptr<Book> book);
     void removeSelectedItem(const QModelIndex &indexRemove);
+    void takeSelectedItem(const QModelIndex &indexRemove, const qlonglong &userId);
+    void returnSelectedItem(const QModelIndex &indexRemove, const qlonglong &userId);
 
 private:
     void removeItemsFromBase(QStringList ids);

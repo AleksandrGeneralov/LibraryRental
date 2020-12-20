@@ -55,9 +55,7 @@ void SqlCreator::create(std::shared_ptr<QSqlDatabase> db)
 
     createTable(db, "books_history",
                     "book_id INTEGER,"
-                    "client_id INTEGER,"
-                    "issue_date VARCHAR(255),"
-                    "return_date INTEGER");
+                    "client_id INTEGER");
 }
 
 void SqlCreator::createTable(std::shared_ptr<QSqlDatabase> db, const QString &tableName, const QString &table)

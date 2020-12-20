@@ -19,7 +19,7 @@ UserInfo::UserInfo()
 
 UserInfo::UserInfo(const QSqlRecord &record)
 {
-    userId = record.value("id").toLongLong();
+    userId = record.value("user_id").toLongLong();
 
     type = record.value("type").toInt();
     discount = record.value("discount").toInt();
@@ -86,6 +86,11 @@ QString UserInfo::createCardNumber()
     SqlManager::getInstance().closeDB();
 
     return QString();
+}
+
+QString UserInfo::getName()
+{
+    return QString("%1 %2 %3").arg(firstName).arg(middleName).arg(lastName);
 }
 
 FullUserInfo::FullUserInfo() : UserInfo()

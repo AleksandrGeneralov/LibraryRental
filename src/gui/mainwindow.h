@@ -5,6 +5,7 @@
 #include "DialogIncludes.h"
 #include "MainIncludes.h"
 #include "bottom_widgets/BottomWidget.h"
+#include "bottom_widgets/personal/PersonalWidget.h"
 #include <QFrame>
 
 class MainWindow : public QMainWindow
@@ -34,11 +35,16 @@ class MainWindow : public QMainWindow
     QPushButton *publishingButton;
 
     std::unique_ptr<BottomWidget> bottomWidget;
+    std::unique_ptr<PersonalWidget> personalWidget;
     QWidget *mainWidget;
+
+    std::unique_ptr<FullUserInfo> user;
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    void setUser(std::unique_ptr<FullUserInfo> user);
 
 private:
     void initUi();
@@ -47,6 +53,7 @@ private:
     void createButtonLayout(QWidget *parent);
 
     void deleteBottomWidget();
+    void deleteCatalogWidget();
 
     QString setFrameStyleSheet();
 

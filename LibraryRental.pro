@@ -1,7 +1,6 @@
 QT = core \
     gui \
-    sql \
-    svg
+    sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

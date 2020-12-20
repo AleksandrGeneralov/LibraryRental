@@ -4,13 +4,9 @@
 #include "DialogIncludes.h"
 #include "MainIncludes.h"
 
-#include <QtSvg/QSvgWidget>
-
 class MessageDialog : public QDialog
 {
     Q_OBJECT
-
-    QPointer<QSvgWidget> icon;
 
 public:
     explicit MessageDialog(QPointer<QWidget> parent,
@@ -24,9 +20,6 @@ public:
 
     static int critical(QPointer<QWidget> parent,
                        const QString &text);
-
-private:
-    void setIcon(const QString &path);
 };
 
 #endif // MESSAGEDIALOG_H
