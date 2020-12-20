@@ -21,11 +21,11 @@ void CatalogModel::setItems()
     if (SqlUtils::getInstance()->sqlTable(db.get(), query, records))
     {
         qDebug() << records.count();
+        beginResetModel();
         if (records.count() > 0)
         {
             QSqlRecord rec = records.first();
             qDebug() << rec.count();
-            beginResetModel();
             books.clear();
             foreach (QSqlRecord record, records)
             {
@@ -35,6 +35,7 @@ void CatalogModel::setItems()
                 {
                     if (authorRecords.isEmpty())
                     {
+                        qDebug("is empty");
                         continue;
                     }
 
@@ -42,8 +43,8 @@ void CatalogModel::setItems()
                     books.append(author);
                 }
             }
-            endResetModel();
         }
+        endResetModel();
     }
     SqlManager::getInstance().closeDB();
 }
@@ -98,15 +99,23 @@ void CatalogModel::takeSelectedItem(const QModelIndex &indexRemove, const qlongl
         qlonglong bookId = books.at(row)->id;
 
         std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+
+        if (SqlUtils::getInstance()->sqlIsExist(db.get(), "books_history", QStringList() << "book_id" << "client_id",
+                                                QStringList() << QString::number(bookId) << QString::number(userId)))
+        {
+            MessageDialog::information(nullptr, QString("Вы уже взяли эту книгу."));
+            return;
+        }
+
         if (!SqlUtils::getInstance()->sqlInsert(db.get(), "books_history",
-            QStringList() << "book_id" << "client_id", QVariantList() << userId << bookId))
+            QStringList() << "book_id" << "client_id", QVariantList() << bookId << userId))
         {
             MessageDialog::critical(nullptr, QString("Ошибка добавления в базу."));
             return;
         }
         books.at(row)->currentCount = books.at(row)->currentCount - 1;
         SqlUtils::getInstance()->sqlUpdate(db.get(), "books", QStringList() << "current_count",
-                                           QStringList() << QString::number(books.at(row)->currentCount));
+                                           QStringList() << QString::number(books.at(row)->currentCount), QString("id=%1").arg(bookId));
         SqlManager::getInstance().closeDB();
     }
     else
@@ -132,7 +141,7 @@ void CatalogModel::returnSelectedItem(const QModelIndex &indexRemove, const qlon
         SqlUtils::getInstance()->sqlExec(db.get(), QString("DELETE FROM books_history WHERE book_id=%1 AND client_id=%2").arg(removeId)
                                                                                                                          .arg(QString::number(userId)));
         SqlUtils::getInstance()->sqlUpdate(db.get(), "books", QStringList() << "current_count",
-                                           QStringList() << QString::number(books.at(row)->currentCount + 1));
+                                           QStringList() << QString::number(books.at(row)->currentCount + 1), QString("id=%1").arg(removeId));
         SqlManager::getInstance().closeDB();
 
         beginResetModel();
@@ -195,7 +204,7 @@ QVariant CatalogModel::headerData(int section, Qt::Orientation orientation, int 
         }
         else if (section == colCurrCount)
         {
-            return QString("Количество в библиотеке");
+            return QString("Доступно в библиотеке");
         }
         else if (section == colAllCount)
         {

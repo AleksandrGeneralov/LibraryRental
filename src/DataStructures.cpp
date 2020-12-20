@@ -4,9 +4,6 @@ UserInfo::UserInfo()
 {
     userId = 0;
 
-    type = 0;
-    discount = 0;
-
     firstName = "";
     lastName = "";
     middleName = "";
@@ -21,9 +18,6 @@ UserInfo::UserInfo(const QSqlRecord &record)
 {
     userId = record.value("user_id").toLongLong();
 
-    type = record.value("type").toInt();
-    discount = record.value("discount").toInt();
-
     setNameFromBase(record.value("name").toString());
     passportSeries = record.value("passport_series").toString();
     passportNumber = record.value("passport_number").toString();
@@ -35,14 +29,12 @@ UserInfo::UserInfo(const QSqlRecord &record)
 void UserInfo::fillSqlData(QStringList &fields, QVariantList &values)
 {
     fields << "user_id"; values << userId;
-    fields << "type"; values << type;
     fields << "name"; values << QString("%1##%2##%3").arg(firstName).arg(middleName).arg(lastName);
     fields << "passport_series"; values << passportSeries;
     fields << "passport_number"; values << passportNumber;
     fields << "issued_organize"; values << issuedOrganize;
     fields << "registration"; values << registration;
     fields << "card_number"; values << cardNumber;
-    fields << "discount"; values << discount;
 }
 
 void UserInfo::setNameFromBase(const QString &name)

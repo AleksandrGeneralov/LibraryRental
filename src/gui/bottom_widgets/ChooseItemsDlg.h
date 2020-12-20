@@ -11,7 +11,7 @@ class ChooseItemsDlg : public QDialog
 
     enum Roles
     {
-        id = 0
+        id = 0x0010
     };
 
     QMap<qlonglong, QString> checkedMap;

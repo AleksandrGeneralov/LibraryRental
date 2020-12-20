@@ -40,6 +40,7 @@ void ChooseItemsDlg::setItemsValue(QMap<qlonglong, QString> dataMap)
     {
         QListWidgetItem *item = new QListWidgetItem(data);
         item->setData(id, dataMap.key(data));
+        item->setText(data);
         if (isChecked)
         {
             item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);

@@ -153,6 +153,9 @@ bool AddEditBooksDialog::addToBase()
     QStringList fields;
     QVariantList values;
 
+    qDebug() << selectedParams[typeGenres].keys();
+    qDebug() << selectedParams[typePublishing].keys();
+
     fields << "name"; values << nameEdit->text().trimmed();
     fields << "all_count"; values << countEdit->text().trimmed().toInt();
     fields << "current_count"; values << countEdit->text().trimmed().toInt();
@@ -267,8 +270,8 @@ void AddEditBooksDialog::slotPublishButtonClick()
     {
         foreach (QSqlRecord record, records)
         {
-            std::unique_ptr<Author> author = std::make_unique<Author>(record);
-            dataMap.insert(author->id, author->name);
+            std::unique_ptr<Publishing> publish = std::make_unique<Publishing>(record);
+            dataMap.insert(publish->id, publish->name);
         }
     }
     SqlManager::getInstance().closeDB();
@@ -286,6 +289,7 @@ void AddEditBooksDialog::slotPublishButtonClick()
         selected = dlg.getSelected();
         qDebug() << selected;
         selectedParams[typePublishing] = selected;
+        qDebug() << selectedParams[typePublishing].keys();
 
         QStringList publish;
         foreach (QString itemName, selected.values())
@@ -307,8 +311,8 @@ void AddEditBooksDialog::slotGenresButtonClick()
     {
         foreach (QSqlRecord record, records)
         {
-            std::unique_ptr<Author> author = std::make_unique<Author>(record);
-            dataMap.insert(author->id, author->name);
+            std::unique_ptr<Genre> genre = std::make_unique<Genre>(record);
+            dataMap.insert(genre->id, genre->name);
         }
     }
     SqlManager::getInstance().closeDB();
@@ -325,6 +329,7 @@ void AddEditBooksDialog::slotGenresButtonClick()
         QMap<qlonglong, QString> selected;
         selected = dlg.getSelected();
         selectedParams[typeGenres] = selected;
+        qDebug() << selectedParams[typeGenres].keys();
 
         QStringList genres;
         foreach (QString itemName, selected.values())

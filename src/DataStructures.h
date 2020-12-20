@@ -13,9 +13,6 @@ struct UserInfo
 {
     qlonglong userId;
 
-    int type;
-    int discount;
-
     QString firstName;
     QString lastName;
     QString middleName;
@@ -97,19 +94,6 @@ struct Book : public BaseDataInfo
     Book();
     Book(const QSqlRecord &record, QList<QSqlRecord> authorRecords);
 };
-
-//struct BookHistory : public BaseDataInfo
-//{
-//    int allCount;
-//    int currentCount;
-
-//    QString genre;
-//    QString publishing;
-//    QStringList authors;
-
-//    Book();
-//    Book(const QSqlRecord &record, QList<QSqlRecord> authorRecords);
-//};
 
 typedef QList<std::shared_ptr<BaseDataInfo>> BaseDataInfos;
 typedef QList<std::shared_ptr<Genre>> Genres;
