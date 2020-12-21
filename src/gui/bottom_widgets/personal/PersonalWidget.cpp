@@ -37,6 +37,7 @@ void PersonalWidget::initUi()
     tableBooks = new CatalogTable(this);
     modelBooks = new CatalogModel(typePersonal, tableBooks);
     tableBooks->setModel(modelBooks);
+    tableBooks->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     mainLay->addWidget(tableBooks);
 
     setData();

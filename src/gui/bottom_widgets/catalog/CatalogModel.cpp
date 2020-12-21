@@ -91,6 +91,7 @@ void CatalogModel::takeSelectedItem(const QModelIndex &indexRemove, const qlongl
     int row = indexRemove.row();
     if (row < books.count())
     {
+        beginResetModel();
         if (books.at(row)->currentCount == 0)
         {
             MessageDialog::information(nullptr, QString("Книга отсутствует в библиотеке."));
@@ -117,6 +118,7 @@ void CatalogModel::takeSelectedItem(const QModelIndex &indexRemove, const qlongl
         SqlUtils::getInstance()->sqlUpdate(db.get(), "books", QStringList() << "current_count",
                                            QStringList() << QString::number(books.at(row)->currentCount), QString("id=%1").arg(bookId));
         SqlManager::getInstance().closeDB();
+        endResetModel();
     }
     else
     {

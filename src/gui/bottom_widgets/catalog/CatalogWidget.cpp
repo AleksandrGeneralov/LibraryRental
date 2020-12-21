@@ -16,6 +16,18 @@ void CatalogWidget::initUi()
 
     table->setModel(model);
 
+    QFontMetrics metrics(table->horizontalHeader()->font());
+    int shift = 15;
+
+    table->setColumnWidth(0, 1.5 * metrics.boundingRect("Название").width() + shift);
+    table->setColumnWidth(1, 3 * metrics.boundingRect("Автор").width() + shift);
+    table->setColumnWidth(2, 3 * metrics.boundingRect("Жанр").width() + shift);
+    table->setColumnWidth(3, 1.5 * metrics.boundingRect("Издательство").width() + shift);
+    table->setColumnWidth(4, metrics.boundingRect("Доступно в библиотеке").width() + shift);
+    table->setColumnWidth(5, metrics.boundingRect("Всего в библиотеке").width() + shift);
+
+    table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
     mainLay->addWidget(table);
 
     QPushButton *takeButton = new QPushButton(QString("Взять в прокат"), this);
