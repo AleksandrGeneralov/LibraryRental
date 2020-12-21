@@ -11,7 +11,6 @@ PublishingModel::PublishingModel(QObject *parent)
 
 void PublishingModel::setItems()
 {
-    qDebug("PublishingModel::setData");
     std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
 
     QList<QSqlRecord> records;

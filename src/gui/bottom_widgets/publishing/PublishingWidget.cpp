@@ -26,7 +26,6 @@ void PublishingWidget::initUi()
 
 void PublishingWidget::setData()
 {
-    qDebug("PublishingWidget::setData");
     PublishingModel *curModel = static_cast<PublishingModel *>(model);
     curModel->setItems();
 }

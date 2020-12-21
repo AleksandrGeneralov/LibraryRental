@@ -63,8 +63,8 @@ void MainWindow::createButtonLayout(QWidget *parent)
     connect(authorsButton, SIGNAL(clicked()), this, SLOT(slotAuthorButtonClicked()));
     connect(publishingButton, SIGNAL(clicked()), this, SLOT(slotPublishingButtonClicked()));
 
-    buttonLay->addWidget(catalogButton, buttonLay->rowCount(), 0, 1, 1);
-    buttonLay->addWidget(personalButton, buttonLay->rowCount() - 1, 1, 1, 2);
+    buttonLay->addWidget(personalButton, buttonLay->rowCount(), 0, 1, 3);
+    buttonLay->addWidget(catalogButton, buttonLay->rowCount(), 0, 1, 3);
 
     buttonLay->addWidget(genresButton, buttonLay->rowCount(), 0, 1, 1);
     buttonLay->addWidget(authorsButton, buttonLay->rowCount() - 1, 1, 1, 1);
@@ -81,7 +81,6 @@ void MainWindow::deleteBottomWidget()
 {
     if (bottomWidget)
     {
-        qDebug("delete bottom widget");
         bottomWidget.reset();
     }
 }
@@ -90,7 +89,6 @@ void MainWindow::deleteCatalogWidget()
 {
     if (personalWidget)
     {
-        qDebug("delete bottom widget");
         personalWidget.reset();
     }
 }

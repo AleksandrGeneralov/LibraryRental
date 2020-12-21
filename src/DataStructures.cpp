@@ -110,7 +110,6 @@ Genre::Genre()
 
 Genre::Genre(const QSqlRecord &record)
 {
-    qDebug("Genre::Genre(const QSqlRecord &record)");
     id = record.value("id").toLongLong();
 
     name = record.value("name_genre").toString();
@@ -203,11 +202,9 @@ Book::Book(const QSqlRecord &record, QList<QSqlRecord> authorRecords)
     genre = record.value("name_genre").toString();
     publishing = record.value("name_publishing").toString();
 
-    qDebug() << authorRecords.count();
     foreach (QSqlRecord rec, authorRecords)
     {
         std::unique_ptr<Author> author = std::make_unique<Author>(rec);
         authors << author->name;
     }
-    qDebug() << "authors: " << authors;
 }

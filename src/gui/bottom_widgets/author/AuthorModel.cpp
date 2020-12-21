@@ -57,7 +57,6 @@ void AuthorModel::removeSelectedItem(const QModelIndex &indexRemove)
     }
 
     int row = indexRemove.row();
-    qDebug() << row;
 
     if (row < authors.count())
     {

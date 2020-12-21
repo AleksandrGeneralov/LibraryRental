@@ -27,7 +27,6 @@ void GenreWidget::initUi()
 
 void GenreWidget::setData()
 {
-    qDebug("GenreWidget::setData");
     GenreModel *curModel = static_cast<GenreModel *>(model);
     curModel->setItems();
 }

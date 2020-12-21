@@ -10,7 +10,6 @@ GenreModel::GenreModel(QObject *parent)
 
 void GenreModel::setItems()
 {
-    qDebug("GenreModel::setData");
     std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
 
     QList<QSqlRecord> records;

@@ -20,12 +20,10 @@ void CatalogModel::setItems()
     QList<QSqlRecord> records;
     if (SqlUtils::getInstance()->sqlTable(db.get(), query, records))
     {
-        qDebug() << records.count();
         beginResetModel();
         if (records.count() > 0)
         {
             QSqlRecord rec = records.first();
-            qDebug() << rec.count();
             books.clear();
             foreach (QSqlRecord record, records)
             {
@@ -35,7 +33,6 @@ void CatalogModel::setItems()
                 {
                     if (authorRecords.isEmpty())
                     {
-                        qDebug("is empty");
                         continue;
                     }
 

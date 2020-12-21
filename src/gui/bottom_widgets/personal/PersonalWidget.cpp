@@ -54,7 +54,6 @@ void PersonalWidget::setData()
     QList<QSqlRecord> records;
     if (SqlUtils::getInstance()->sqlTable(db.get(), query, records))
     {
-        qDebug() << records.count();
         foreach (QSqlRecord rec, records)
         {
             QList<QSqlRecord> authorRecords;
