@@ -66,6 +66,14 @@ void CatalogModel::removeSelectedItem(const QModelIndex &indexRemove)
     {
         QString removeId = QString::number(books.at(row)->id);
 
+        std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
+        if (SqlUtils::getInstance()->sqlIsExist(db.get(), "books_history", QStringList() << "book_id", QStringList() << removeId))
+        {
+            MessageDialog::information(nullptr, QString("Книга взята для чтения."));
+            return;
+        }
+        SqlManager::getInstance().closeDB();
+
         beginResetModel();
         books.removeAt(row);
         endResetModel();
@@ -95,6 +103,7 @@ void CatalogModel::takeSelectedItem(const QModelIndex &indexRemove, const qlongl
             return;
         }
         qlonglong bookId = books.at(row)->id;
+        qDebug() << bookId;
 
         std::shared_ptr<QSqlDatabase> db = SqlManager::getInstance().openDB();
 
@@ -103,6 +112,16 @@ void CatalogModel::takeSelectedItem(const QModelIndex &indexRemove, const qlongl
         {
             MessageDialog::information(nullptr, QString("Вы уже взяли эту книгу."));
             return;
+        }
+
+        QVariant count;
+        if (SqlUtils::getInstance()->sqlValue(db.get(), QString("SELECT COUNT(*) FROM books_history WHERE client_id=%1").arg(QString::number(userId)), count))
+        {
+            if (count.toInt() > 2)
+            {
+                MessageDialog::information(nullptr, QString("Количество взятых книг превышает 3."));
+                return;
+            }
         }
 
         if (!SqlUtils::getInstance()->sqlInsert(db.get(), "books_history",

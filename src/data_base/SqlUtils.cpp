@@ -77,7 +77,7 @@ bool SqlUtils::sqlInsert(QSqlDatabase *db, const QString &table, const QStringLi
     {
         prepareFields.append(QString(":%1").arg(field));
     }
-
+                            // INSERT INTO table (value) VALUES (:value)
     QString command = QString("INSERT INTO %1 (%2) VALUES (%3)").arg(table).arg(fields.join(",")).arg(prepareFields.join(","));
 
     QSqlQuery query(*db);
@@ -122,7 +122,7 @@ bool SqlUtils::sqlUpdate(QSqlDatabase *db, const QString &table, const QStringLi
     {
         preparedValues.append(QString("%1=%2").arg(fields.at(i)).arg(values.at(i)));
     }
-
+                            // UPDATE table SET value=_value WHERE id=1
     QString command = QString("UPDATE %1 SET %2 WHERE %3").arg(table).arg(preparedValues.join(",")).arg(filterCommand);
 
     return execCommand(db, command);
